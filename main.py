@@ -45,3 +45,10 @@ def delete_food(index: int):
         removed = DB.pop(index)
         return {"message": "Deleted", "data": removed}
     return {"error": "Not found"}
+
+
+@app.post("/login")
+def login(user: dict):
+    if user["username"] == "admin" and user["password"] == "food123":
+        return {"message": "Login successful"}
+    return {"error": "Invalid credentials"}
