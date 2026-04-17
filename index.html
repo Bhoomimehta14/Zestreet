@@ -521,6 +521,8 @@ function doLogin(){
   const p = document.getElementById('a-pass').value;
   const err = document.getElementById('a-err');
 
+  console.log("Login clicked");
+
   fetch("https://zestreet-api.onrender.com/login", {
     method: "POST",
     headers: {
@@ -533,6 +535,8 @@ function doLogin(){
   })
   .then(res => res.json())
   .then(data => {
+    console.log(data);
+
     if (data.message) {
       err.style.display = 'none';
 
@@ -545,6 +549,9 @@ function doLogin(){
     } else {
       err.style.display = 'block';
     }
+  })
+  .catch(err => {
+    console.error("Fetch error:", err);
   });
 }
 function doLogout(){
