@@ -1,0 +1,740 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif}
+.pv{display:none}.pv.on{display:block}
+
+/* ══ AUTH ══ */
+.auth-wrap{background:#1A4A30;min-height:820px;display:flex;position:relative;overflow:hidden}
+.bg-c{position:absolute;border-radius:50%;background:rgba(255,255,255,.055);pointer-events:none}
+.auth-left{width:50%;flex-shrink:0;background:#fff;position:relative;z-index:2;display:flex;flex-direction:column;padding:36px 40px 28px 40px}
+.wave-svg{position:absolute;top:0;right:-110px;height:100%;width:160px;z-index:3;pointer-events:none}
+.auth-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.auth-logo-ico{width:38px;height:38px;border-radius:10px;background:#1A4A30;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.auth-logo-text{font-size:15px;font-weight:900;color:#1C1B2E;letter-spacing:-.3px}
+.auth-logo-text span{color:#E8980A}
+.auth-logo-sub{font-size:9.5px;color:#AAA;letter-spacing:.06em}
+.auth-illus{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
+.illus-blob{position:absolute;width:300px;height:280px;background:#EAF4EE;border-radius:55% 45% 50% 50%/48% 52% 48% 52%;top:50%;left:50%;transform:translate(-50%,-50%)}
+.id{position:absolute;border-radius:50%;background:#C8E0D0}
+.auth-left-foot{font-size:9px;color:#CCC;margin-top:16px}
+.auth-right{flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:48px 56px 48px 90px;position:relative;z-index:2}
+.auth-title{font-size:34px;font-weight:800;color:#fff;margin-bottom:30px}
+.auth-form{width:100%;max-width:300px}
+.a-lbl{display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:6px}
+.a-inp{width:100%;background:rgba(0,0,0,.22);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;padding:11px 14px;color:#fff;font-size:13px;outline:none;margin-bottom:16px;transition:border .2s}
+.a-inp::placeholder{color:rgba(255,255,255,.28)}
+.a-inp:focus{border-color:rgba(232,152,10,.7)}
+.a-forgot{text-align:right;margin-top:-10px;margin-bottom:20px}
+.a-forgot a{font-size:11px;color:rgba(255,255,255,.38);text-decoration:none}
+.a-hint{background:rgba(0,0,0,.18);border-radius:10px;padding:11px 14px;margin-bottom:18px;font-size:11.5px;color:rgba(255,255,255,.45);line-height:1.8}
+.a-hint strong{color:rgba(255,255,255,.8)}
+.a-err{background:rgba(200,50,50,.18);border:1px solid rgba(200,50,50,.28);border-radius:10px;padding:9px 14px;margin-bottom:14px;font-size:12px;color:#FFB0B0;display:none}
+.a-btn{width:100%;background:#5BA08A;color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;letter-spacing:.02em;transition:background .15s}
+.a-btn:hover{background:#4A8A76}
+
+/* ══ TOPBAR ══ */
+#main-top{display:none}
+.topbar{background:#1C1B2E;padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-dot{width:30px;height:30px;border-radius:9px;background:#E8980A;display:flex;align-items:center;justify-content:center}
+.brand-name{color:#fff;font-size:16px;font-weight:900;letter-spacing:-.3px}
+.brand-name span{color:#E8980A}
+.brand-sub{color:rgba(255,255,255,.35);font-size:11px;margin-top:1px}
+.tabs{display:flex;gap:6px}
+.tab{padding:7px 18px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .15s;display:flex;align-items:center;gap:5px}
+.tab.on{background:#E8980A;color:#fff}
+.tab:not(.on){background:rgba(255,255,255,.1);color:rgba(255,255,255,.6)}
+.tab:not(.on):hover{background:rgba(255,255,255,.15);color:#fff}
+.tab-plus:not(.on){background:rgba(39,174,96,.2);color:#7DE8A0}
+.tab-plus.on{background:#27AE60;color:#fff}
+.out-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);border-radius:20px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer}
+.out-btn:hover{background:rgba(255,255,255,.14);color:#fff}
+
+/* ══ SHARED ══ */
+.pc{padding:24px 28px;background:#F7F5F0;min-height:calc(100vh - 56px)}
+.gr h1{font-size:24px;font-weight:800;color:#1C1B2E;margin-bottom:4px}
+.gr p{font-size:12px;color:#AAA;margin-bottom:20px}
+
+/* ══ DASHBOARD ══ */
+.krow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.kpi{border-radius:18px;padding:18px 20px;position:relative;overflow:hidden;min-height:96px}
+.ky{background:#E8980A}.kp{background:#F2C8D4}.kg{background:#1A6B38}.kl{background:#C8D4F2}
+.kl2{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.ky .kl2,.kg .kl2{color:rgba(255,255,255,.7)}.kp .kl2{color:#7A2840}.kl .kl2{color:#1A2E7A}
+.kv{font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.ky .kv,.kg .kv{color:#fff}.kp .kv{color:#5C1A30}.kl .kv{color:#0F1E5C}
+.ks{font-size:10.5px;opacity:.7}
+.ky .ks,.kg .ks{color:#fff}.kp .ks{color:#6B1F38}.kl .ks{color:#172566}
+.kb{position:absolute;border-radius:50%;opacity:.2;background:#fff}
+.sec{display:flex;align-items:center;gap:10px;margin:4px 0 16px}
+.sb{width:4px;height:18px;border-radius:2px;background:#1C1B2E;flex-shrink:0}
+.sl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#1C1B2E}
+.sl2{flex:1;height:1px;background:#E0DCD4}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.card{background:#fff;border-radius:18px;padding:18px 20px;overflow:hidden}
+.cy{background:#E8980A}.cp{background:#F2C8D4}.cg2{background:#1A6B38}.cl{background:#C8D4F2}
+.ct{font-size:13px;font-weight:700;margin-bottom:2px}
+.cs{font-size:11px;margin-bottom:14px}
+.cy .ct,.cg2 .ct{color:#fff}.cy .cs,.cg2 .cs{color:rgba(255,255,255,.65)}
+.cp .ct{color:#5C1A30}.cp .cs{color:#8A2840}.cl .ct{color:#0F1E5C}.cl .cs{color:#2A3E8A}
+.leg{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.li{display:flex;align-items:center;gap:5px;font-size:11px}
+.ls{width:9px;height:9px;border-radius:2px}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.tc{border-radius:18px;padding:18px 20px}
+.tcy{background:#E8980A}.tcg{background:#1A6B38}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{text-align:left;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:0 8px 8px 0;border-bottom:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6)}
+td{padding:7px 8px 7px 0;border-bottom:1px solid rgba(255,255,255,.1);vertical-align:middle;color:#fff}
+tr:last-child td{border-bottom:none}
+.bdg{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.2);color:#fff}
+
+/* ══ EXPLORE ══ */
+.exg{display:grid;grid-template-columns:240px 1fr;gap:16px}
+.fp{background:#1C1B2E;border-radius:18px;padding:20px 18px;position:sticky;top:72px;align-self:start}
+.fpt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.32);margin-bottom:18px}
+.fl{font-size:10.5px;color:rgba(255,255,255,.48);display:block;margin-bottom:5px;font-weight:600}
+/* explore sidebar selects — dark bg so options are always visible */
+.fp select{width:100%;background:#1C1B2E;border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:7px 10px;color:#fff;font-size:12px;outline:none;margin-bottom:14px}
+.fp select option{background:#1C1B2E;color:#fff}
+.fp input[type=range]{width:100%;accent-color:#E8980A}
+.ab{width:100%;background:#E8980A;color:#fff;border:none;border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px}
+.cb2{width:100%;background:transparent;color:rgba(255,255,255,.32);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px;font-size:11px;cursor:pointer;margin-top:6px}
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.fc{border-radius:16px;padding:18px 18px 16px;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.fc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.fc-y{background:#E8980A}.fc-p{background:#F2C8D4}.fc-g{background:#1A6B38}.fc-l{background:#C8D4F2}
+.fc-blob{position:absolute;width:70px;height:70px;border-radius:50%;opacity:.18;top:-18px;right:-18px;background:#fff}
+.fc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.fc-flag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(0,0,0,.15);color:#fff}
+.fc-p .fc-flag{background:rgba(0,0,0,.1);color:#5C1A30}.fc-l .fc-flag{background:rgba(0,0,0,.1);color:#0F1E5C}
+.fc-vdot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800}
+.fc-vdot.veg{background:rgba(255,255,255,.25);color:#fff}
+.fc-vdot.nv{background:rgba(0,0,0,.18);color:#fff}
+.fc-p .fc-vdot.veg,.fc-l .fc-vdot.veg{background:#1A6B38;color:#fff}
+.fc-p .fc-vdot.nv,.fc-l .fc-vdot.nv{background:#C0392B;color:#fff}
+.fc-name{font-size:15px;font-weight:800;margin-bottom:3px;line-height:1.2}
+.fc-y .fc-name,.fc-g .fc-name{color:#fff}.fc-p .fc-name{color:#5C1A30}.fc-l .fc-name{color:#0F1E5C}
+.fc-city{font-size:11px;margin-bottom:14px;opacity:.65}
+.fc-y .fc-city,.fc-g .fc-city{color:#fff}.fc-p .fc-city{color:#7A2840}.fc-l .fc-city{color:#1A2E7A}
+.fc-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.fc-price{font-size:20px;font-weight:800}
+.fc-y .fc-price,.fc-g .fc-price{color:#fff}.fc-p .fc-price{color:#5C1A30}.fc-l .fc-price{color:#0F1E5C}
+.fc-stars{font-size:12px;letter-spacing:.5px}
+.fc-y .fc-stars,.fc-g .fc-stars{color:rgba(255,255,255,.9)}.fc-p .fc-stars,.fc-l .fc-stars{color:#E8980A}
+.fc-method{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.fc-y .fc-method,.fc-g .fc-method{background:rgba(0,0,0,.15);color:#fff}
+.fc-p .fc-method{background:rgba(0,0,0,.07);color:#7A2840}.fc-l .fc-method{background:rgba(0,0,0,.07);color:#1A2E7A}
+
+/* ══ MANAGE ══ */
+.crud-layout{display:grid;grid-template-columns:240px 1fr;gap:20px}
+.op-panel{background:#1C1B2E;border-radius:18px;padding:20px 18px;position:sticky;top:72px;align-self:start}
+.op-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.3);margin-bottom:16px}
+.op-btn{width:100%;display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;border:none;background:transparent;color:rgba(255,255,255,.5);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;margin-bottom:6px;text-align:left}
+.op-btn:hover{background:rgba(255,255,255,.07);color:#fff}
+.op-btn.on{background:rgba(255,255,255,.1);color:#fff}
+.op-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.op-ic-add{background:rgba(39,174,96,.25)}.op-ic-upd{background:rgba(232,152,10,.25)}
+.op-ic-del{background:rgba(192,57,43,.25)}.op-ic-view{background:rgba(52,152,219,.25)}
+.crud-right{display:flex;flex-direction:column;gap:0}
+.form-card{background:#fff;border-radius:18px;padding:24px 26px}
+.form-card-title{font-size:16px;font-weight:800;color:#1C1B2E;margin-bottom:4px}
+.form-card-sub{font-size:12px;color:#AAA;margin-bottom:22px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg-full{grid-column:1/-1}
+.f-group{display:flex;flex-direction:column;gap:6px}
+.f-lbl{font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:6px}
+.opt-tag{font-size:9px;background:#F0ECE4;color:#AAA;padding:2px 6px;border-radius:6px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.f-inp{padding:10px 13px;border:1.5px solid #E8E4DC;border-radius:10px;font-size:13px;color:#1C1B2E;outline:none;transition:border .2s;background:#fff;width:100%}
+.f-inp:focus{border-color:#E8980A}
+
+/* THE KEY FIX: manage form selects always use white bg + dark text so options render correctly in every browser */
+.f-sel{
+  padding:10px 13px;
+  border:1.5px solid #E8E4DC;
+  border-radius:10px;
+  font-size:13px;
+  color:#1C1B2E;
+  outline:none;
+  background:#fff;
+  cursor:pointer;
+  width:100%;
+  -webkit-appearance:auto;
+  appearance:auto;
+}
+.f-sel:focus{border-color:#E8980A}
+/* all option elements inside manage form selects: explicit dark text on white */
+.f-sel option{
+  background:#fff !important;
+  color:#1C1B2E !important;
+  font-size:13px;
+}
+.f-sel option:disabled{color:#AAA !important}
+
+/* delete select special styling — red tint but still readable */
+.del-sel{
+  padding:10px 13px;
+  border:1.5px solid #F5C6C6;
+  border-radius:10px;
+  font-size:13px;
+  color:#C0392B;
+  outline:none;
+  background:#fff;
+  cursor:pointer;
+  width:100%;
+  -webkit-appearance:auto;
+  appearance:auto;
+}
+.del-sel:focus{border-color:#C0392B}
+.del-sel option{
+  background:#fff !important;
+  color:#1C1B2E !important;
+  font-size:13px;
+}
+.del-sel option:first-child{color:#AAA !important}
+
+.btn-row{display:flex;gap:10px;margin-top:20px}
+.btn-add{background:#27AE60;color:#fff;border:none;border-radius:12px;padding:11px 28px;font-size:13px;font-weight:800;cursor:pointer}
+.btn-add:hover{background:#1E9451}
+.btn-upd{background:#E8980A;color:#fff;border:none;border-radius:12px;padding:11px 28px;font-size:13px;font-weight:800;cursor:pointer}
+.btn-upd:hover{background:#C07808}
+.btn-del{background:#C0392B;color:#fff;border:none;border-radius:12px;padding:11px 28px;font-size:13px;font-weight:800;cursor:pointer}
+.btn-del:hover{background:#A93226}
+.btn-reset{background:transparent;color:#AAA;border:1.5px solid #E8E4DC;border-radius:12px;padding:11px 20px;font-size:13px;font-weight:600;cursor:pointer}
+.del-warn{background:#FDECEA;border-radius:12px;padding:12px 16px;font-size:12px;color:#C0392B;margin-top:14px;display:none;border:1px solid #F5C6C6}
+.rec-table-wrap{background:#fff;border-radius:18px;padding:20px 22px;overflow-x:auto}
+.rec-table{width:100%;border-collapse:collapse;font-size:12px}
+.rec-table th{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#AAA;padding:0 12px 10px 0;border-bottom:1.5px solid #F0ECE4}
+.rec-table td{padding:10px 12px 10px 0;border-bottom:1px solid #F7F5F0;color:#1C1B2E;vertical-align:middle}
+.rec-table tr:last-child td{border-bottom:none}
+.rec-table tr:hover td{background:#FDFAF5}
+.rbv{background:#EAF4EE;color:#1A6B38;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.rbnv{background:#FDECEA;color:#C0392B;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.re-btn{background:#FFF3E0;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;color:#E8980A;cursor:pointer}
+.rd-btn{background:#FDECEA;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;color:#C0392B;cursor:pointer;margin-left:5px}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1C1B2E;color:#fff;padding:12px 22px;border-radius:14px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;border-left:4px solid #27AE60;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.err{border-left-color:#C0392B}
+.pop-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:999;align-items:center;justify-content:center}
+.pop-ov.open{display:flex}
+.pop-box{background:#1C1B2E;border-radius:24px;width:380px;overflow:hidden}
+.pop-hdr{padding:24px 22px 20px;position:relative}
+.pop-close{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:13px;cursor:pointer;line-height:28px;text-align:center}
+.pop-name{font-size:20px;font-weight:800;color:#fff;margin-bottom:3px}
+.pop-loc{font-size:12px;color:rgba(255,255,255,.38)}
+.pop-body{padding:0 22px 24px}
+.pop-stats{display:flex;gap:8px;margin-bottom:16px}
+.pop-stat{background:rgba(255,255,255,.07);border-radius:12px;padding:10px;flex:1;text-align:center}
+.pop-sv{font-size:16px;font-weight:800;color:#fff}
+.pop-sl{font-size:9.5px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.pop-ititle{font-size:10px;font-weight:700;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.pop-ing{font-size:12px;color:rgba(255,255,255,.62);line-height:1.6;margin-bottom:14px}
+.pop-tags{display:flex;gap:6px;flex-wrap:wrap}
+.pop-tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
+.pop-tag.veg{background:rgba(26,107,56,.35);color:#7DE8A0}
+.pop-tag.nv{background:rgba(200,50,80,.2);color:#FFAABB}
+</style>
+
+<h2 class="sr-only">Zestreet — Street Food Analytics</h2>
+<div id="toast" class="toast"></div>
+
+<!-- ══ AUTH ══ -->
+<div id="pv-auth" class="pv on">
+<div class="auth-wrap">
+  <div class="bg-c" style="width:200px;height:200px;top:6%;right:5%"></div>
+  <div class="bg-c" style="width:100px;height:100px;bottom:12%;right:20%"></div>
+  <div class="bg-c" style="width:60px;height:60px;top:50%;right:40%"></div>
+  <div class="bg-c" style="width:40px;height:40px;bottom:25%;right:4%"></div>
+  <div class="auth-left">
+    <div class="auth-logo-row">
+      <div class="auth-logo-ico">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C8 2 5 5 5 9c0 2.5 1.2 4.7 3 6.1V18h8v-2.9c1.8-1.4 3-3.6 3-6.1 0-4-3-7-7-7z" fill="#E8980A"/>
+          <path d="M9 18v1a1 1 0 001 1h4a1 1 0 001-1v-1H9z" fill="#D4920A"/>
+          <circle cx="10" cy="9" r="1.1" fill="#fff"/><circle cx="14" cy="9" r="1.1" fill="#fff"/>
+          <path d="M10 13h4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div><div class="auth-logo-text">Zes<span>treet</span></div><div class="auth-logo-sub">Global Street Food Intelligence</div></div>
+    </div>
+    <div class="auth-illus">
+      <div class="id" style="width:18px;height:18px;top:9%;left:12%"></div>
+      <div class="id" style="width:26px;height:26px;top:5%;right:24%"></div>
+      <div class="id" style="width:12px;height:12px;bottom:16%;left:6%"></div>
+      <div class="id" style="width:20px;height:20px;bottom:8%;right:16%"></div>
+      <div class="id" style="width:10px;height:10px;top:44%;left:3%"></div>
+      <div class="illus-blob"></div>
+      <svg width="270" height="250" viewBox="0 0 270 250" xmlns="http://www.w3.org/2000/svg" style="position:relative;z-index:2">
+        <rect x="65" y="148" width="140" height="52" rx="10" fill="#1A4A30"/>
+        <rect x="72" y="138" width="126" height="20" rx="6" fill="#2A6A44"/>
+        <path d="M58 128 Q135 106 212 128 L207 143 Q135 122 63 143 Z" fill="#E8980A"/>
+        <line x1="93" y1="111" x2="88" y2="141" stroke="#C07808" stroke-width="7" stroke-linecap="round"/>
+        <line x1="122" y1="108" x2="118" y2="141" stroke="#C07808" stroke-width="7" stroke-linecap="round"/>
+        <line x1="152" y1="108" x2="148" y2="141" stroke="#C07808" stroke-width="7" stroke-linecap="round"/>
+        <line x1="181" y1="111" x2="176" y2="141" stroke="#C07808" stroke-width="7" stroke-linecap="round"/>
+        <rect x="128" y="58" width="9" height="74" rx="4" fill="#2A6A44"/>
+        <rect x="112" y="58" width="58" height="28" rx="6" fill="#1A4A30"/>
+        <text x="141" y="76" text-anchor="middle" font-size="8.5" fill="#E8980A" font-weight="bold" font-family="sans-serif">ZESTREET</text>
+        <rect x="87" y="155" width="38" height="28" rx="4" fill="#E8980A" opacity=".7"/>
+        <rect x="135" y="155" width="38" height="28" rx="4" fill="#E8980A" opacity=".7"/>
+        <circle cx="93" cy="202" r="13" fill="#1C1B2E" stroke="#E8980A" stroke-width="3"/><circle cx="93" cy="202" r="4.5" fill="#E8980A"/>
+        <circle cx="173" cy="202" r="13" fill="#1C1B2E" stroke="#E8980A" stroke-width="3"/><circle cx="173" cy="202" r="4.5" fill="#E8980A"/>
+        <ellipse cx="102" cy="136" rx="13" ry="5.5" fill="#FFF3E0"/>
+        <path d="M89 136 Q102 150 115 136" fill="#E8C87A"/>
+        <path d="M91 122 Q96 116 91 110" fill="none" stroke="#AACDB8" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M99 119 Q104 113 99 107" fill="none" stroke="#AACDB8" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="144" y1="102" x2="136" y2="138" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="155" y1="100" x2="147" y2="136" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="140" cy="110" r="5" fill="#E8980A"/><circle cx="145" cy="120" r="5" fill="#C0392B"/><circle cx="150" cy="110" r="5" fill="#E8980A"/>
+        <circle cx="45" cy="168" r="9" fill="#1C1B2E"/><rect x="40" y="177" width="10" height="20" rx="4" fill="#2A6A44"/>
+        <line x1="40" y1="183" x2="31" y2="193" stroke="#1C1B2E" stroke-width="3" stroke-linecap="round"/>
+        <line x1="50" y1="183" x2="56" y2="197" stroke="#1C1B2E" stroke-width="3" stroke-linecap="round"/>
+        <line x1="56" y1="197" x2="67" y2="191" stroke="#1C1B2E" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="69" cy="189" rx="7" ry="4" fill="#FFF3E0"/>
+        <line x1="41" y1="197" x2="38" y2="214" stroke="#2A6A44" stroke-width="3" stroke-linecap="round"/>
+        <line x1="49" y1="197" x2="52" y2="214" stroke="#2A6A44" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="222" cy="170" r="8" fill="#5A3825"/><rect x="217" y="178" width="10" height="19" rx="4" fill="#F2C8D4"/>
+        <line x1="227" y1="184" x2="233" y2="183" stroke="#5A3825" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="218" y1="197" x2="215" y2="214" stroke="#F2C8D4" stroke-width="3" stroke-linecap="round"/>
+        <line x1="225" y1="197" x2="228" y2="214" stroke="#F2C8D4" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="133" cy="222" rx="98" ry="7" fill="#BDD8C8" opacity=".45"/>
+      </svg>
+    </div>
+    <div class="auth-left-foot">© 2025 Zestreet · Global Street Food Intelligence</div>
+    <svg class="wave-svg" viewBox="0 0 160 820" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0 L80 0 C80 0 130 205 80 410 C30 615 80 820 80 820 L0 820 Z" fill="#fff"/>
+    </svg>
+  </div>
+  <div class="auth-right">
+    <div class="auth-title">Login</div>
+    <div class="auth-form">
+      <div id="a-err" class="a-err">Incorrect credentials. Use <strong>admin / food123</strong></div>
+      <label class="a-lbl">Username</label>
+      <input class="a-inp" id="a-user" type="text" placeholder="Enter your username">
+      <label class="a-lbl">Password</label>
+      <input class="a-inp" id="a-pass" type="password" placeholder="Enter your password">
+      <div class="a-forgot"><a href="#">Forgot Password?</a></div>
+      <div class="a-hint"><strong>Demo credentials</strong><br>Username: <strong>admin</strong> &nbsp;·&nbsp; Password: <strong>food123</strong></div>
+      <button class="a-btn" onclick="doLogin()">Login to Zestreet</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ TOPBAR ══ -->
+<div id="main-top">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-dot"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 9c0 2.5 1.2 4.7 3 6.1V18h8v-2.9c1.8-1.4 3-3.6 3-6.1 0-4-3-7-7-7z" fill="#fff"/></svg></div>
+      <div><div class="brand-name">Zes<span>treet</span></div><div class="brand-sub" id="topbar-sub">— dishes · — countries</div></div>
+    </div>
+    <div class="tabs">
+      <div class="tab on" id="tab-db" onclick="showPage('db')">Dashboard</div>
+      <div class="tab" id="tab-ex" onclick="showPage('ex')">Explore</div>
+      <div class="tab tab-plus" id="tab-crud" onclick="showPage('crud')">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        Manage
+      </div>
+    </div>
+    <button class="out-btn" onclick="doLogout()">→ Logout</button>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="pv-db" class="pv">
+<div class="pc">
+  <div class="gr"><h1>Good morning, Analyst.</h1><p id="db-sub">Loading…</p></div>
+  <div class="krow">
+    <div class="kpi ky"><div class="kb" style="width:80px;height:80px;top:-24px;right:-20px"></div><div class="kl2">Total Dishes</div><div class="kv" id="kpi-total">—</div><div class="ks" id="kpi-countries">—</div></div>
+    <div class="kpi kp"><div class="kb" style="width:64px;height:64px;background:#C47090;top:-18px;right:-14px"></div><div class="kl2">Avg Rating</div><div class="kv" id="kpi-rating">—</div><div class="ks">out of 5.0</div></div>
+    <div class="kpi kg"><div class="kb" style="width:80px;height:80px;top:-24px;right:-20px"></div><div class="kl2">Avg Price</div><div class="kv" id="kpi-price">—</div><div class="ks">USD equivalent</div></div>
+    <div class="kpi kl"><div class="kb" style="width:68px;height:68px;background:#6070C8;top:-20px;right:-16px"></div><div class="kl2">Top Country</div><div class="kv" style="font-size:20px" id="kpi-top">—</div><div class="ks" id="kpi-top-sub">—</div></div>
+  </div>
+  <div class="sec"><div class="sb"></div><span class="sl">User Preferences</span><div class="sl2"></div></div>
+  <div class="cg">
+    <div class="card cy"><div class="ct">Price vs Rating</div><div class="cs">Avg rating by price bracket</div><div style="position:relative;height:180px"><canvas id="ch1" role="img" aria-label="Price vs rating">data</canvas></div></div>
+    <div class="card cp">
+      <div class="ct">Veg vs Non-Veg</div><div class="cs">Distribution by food type</div>
+      <div class="leg"><div class="li"><div class="ls" style="background:#5C1A30"></div><span style="color:#5C1A30" id="leg-veg">Vegetarian</span></div><div class="li"><div class="ls" style="background:#D4537E"></div><span style="color:#8A2040" id="leg-nv">Non-Veg</span></div></div>
+      <div style="position:relative;height:155px"><canvas id="ch2" role="img" aria-label="Veg donut">data</canvas></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sb"></div><span class="sl">Health Insights</span><div class="sl2"></div></div>
+  <div class="cg">
+    <div class="card cg2">
+      <div class="ct">Healthy vs Unhealthy</div><div class="cs">Grilled / Boiled / Steamed = Healthy</div>
+      <div class="leg"><div class="li"><div class="ls" style="background:rgba(255,255,255,.9)"></div><span style="color:rgba(255,255,255,.85)" id="leg-h">Healthy</span></div><div class="li"><div class="ls" style="background:rgba(255,255,255,.35)"></div><span style="color:rgba(255,255,255,.55)" id="leg-uh">Unhealthy</span></div></div>
+      <div style="position:relative;height:155px"><canvas id="ch3" role="img" aria-label="Health donut">data</canvas></div>
+    </div>
+    <div class="card cl"><div class="ct">Fried food by country</div><div class="cs">% of dishes using Fried method</div><div style="position:relative;height:180px"><canvas id="ch4" role="img" aria-label="Fried by country">data</canvas></div></div>
+  </div>
+  <div class="sec"><div class="sb"></div><span class="sl">Market Insights</span><div class="sl2"></div></div>
+  <div class="cg">
+    <div class="card"><div class="ct" style="color:#1C1B2E">City diversity</div><div class="cs" style="color:#AAA">Top 10 cities by dish count</div><div style="position:relative;height:200px"><canvas id="ch5" role="img" aria-label="City diversity">data</canvas></div></div>
+    <div class="card"><div class="ct" style="color:#1C1B2E">Value for money index</div><div class="cs" style="color:#AAA">Rating ÷ Price</div><div style="position:relative;height:200px"><canvas id="ch6" role="img" aria-label="Value index">data</canvas></div></div>
+  </div>
+  <div class="sec"><div class="sb"></div><span class="sl">Deep Insights</span><div class="sl2"></div></div>
+  <div class="ig">
+    <div class="tc tcy"><div class="ct" style="color:#fff;margin-bottom:2px">Overpriced foods</div><div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:12px">High price relative to rating</div><table><thead><tr><th>Dish</th><th>Country</th><th>Price</th><th>Rating</th><th>Gap</th></tr></thead><tbody id="over-body"></tbody></table></div>
+    <div class="tc tcg"><div class="ct" style="color:#fff;margin-bottom:2px">Hidden gems</div><div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:12px">High rating, below-average price</div><table><thead><tr><th>Dish</th><th>Country</th><th>Price</th><th>Rating</th></tr></thead><tbody id="gem-body"></tbody></table></div>
+  </div>
+</div>
+</div>
+
+<!-- ══ EXPLORE ══ -->
+<div id="pv-ex" class="pv">
+<div class="pc">
+  <div class="gr"><h1>Explore dishes</h1><p style="margin-bottom:18px">Filter and click any card for full details.</p></div>
+  <div class="exg">
+    <div class="fp">
+      <div class="fpt">Filters</div>
+      <label class="fl">Country</label>
+      <select id="f-co" onchange="filterCountryChange()"><option value="">All Countries</option></select>
+      <label class="fl">City</label>
+      <select id="f-ci"><option value="">All Cities</option></select>
+      <label class="fl">Food Type</label>
+      <select id="f-ty"><option value="">All Types</option><option>Vegetarian</option><option>Non-Vegetarian</option></select>
+      <label class="fl">Cooking Method</label>
+      <select id="f-me"><option value="">Any Method</option><option>Assembled</option><option>Baked</option><option>Boiled</option><option>Boiled/Grilled</option><option>Fried</option><option>Grilled</option><option>Pan-Fried</option><option>Stewed</option><option>Stir-Fried</option></select>
+      <label class="fl">Max Price: <span id="pv2" style="color:#E8980A">$50.00</span></label>
+      <input type="range" min="0.1" max="50" step="0.1" value="50" id="f-pr" oninput="document.getElementById('pv2').textContent='$'+parseFloat(this.value).toFixed(2)" style="margin-bottom:14px">
+      <button class="ab" onclick="applyF()">Apply Filters</button>
+      <button class="cb2" onclick="clearF()">Clear all</button>
+    </div>
+    <div>
+      <div style="font-size:12px;color:#999;margin-bottom:14px" id="res-ct"></div>
+      <div class="fg" id="food-grid"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ MANAGE ══ -->
+<div id="pv-crud" class="pv">
+<div class="pc">
+  <div class="gr"><h1>Manage dishes</h1><p style="margin-bottom:20px">Add, update, delete or view all records. Changes sync across the entire platform instantly.</p></div>
+  <div class="crud-layout">
+    <div class="op-panel">
+      <div class="op-title">Operations</div>
+      <button class="op-btn on" id="op-add" onclick="setOp('add')"><div class="op-ic op-ic-add">＋</div><div><div>Add Dish</div><div style="font-size:10px;opacity:.45;margin-top:2px">INSERT</div></div></button>
+      <button class="op-btn" id="op-upd" onclick="setOp('upd')"><div class="op-ic op-ic-upd">✎</div><div><div>Update Dish</div><div style="font-size:10px;opacity:.45;margin-top:2px">UPDATE</div></div></button>
+      <button class="op-btn" id="op-del" onclick="setOp('del')"><div class="op-ic op-ic-del">✕</div><div><div>Delete Dish</div><div style="font-size:10px;opacity:.45;margin-top:2px">DELETE</div></div></button>
+      <button class="op-btn" id="op-view" onclick="setOp('view')"><div class="op-ic op-ic-view">☰</div><div><div>View All</div><div style="font-size:10px;opacity:.45;margin-top:2px">SELECT *</div></div></button>
+    </div>
+    <div class="crud-right" id="crud-right"></div>
+  </div>
+</div>
+</div>
+
+<!-- ══ POPUP ══ -->
+<div class="pop-ov" id="popup" onclick="closeP(event)">
+  <div class="pop-box">
+    <div class="pop-hdr" id="pop-hdr">
+      <button class="pop-close" onclick="document.getElementById('popup').classList.remove('open')">✕</button>
+      <div class="pop-name" id="pop-nm"></div>
+      <div class="pop-loc" id="pop-lc"></div>
+    </div>
+    <div class="pop-body">
+      <div class="pop-stats">
+        <div class="pop-stat"><div class="pop-sv" id="pop-pr"></div><div class="pop-sl">Price</div></div>
+        <div class="pop-stat"><div class="pop-sv" id="pop-rt"></div><div class="pop-sl">Rating</div></div>
+        <div class="pop-stat"><div class="pop-sv" id="pop-mt"></div><div class="pop-sl">Method</div></div>
+      </div>
+      <div class="pop-ititle">Ingredients</div>
+      <div class="pop-ing" id="pop-ig"></div>
+      <div class="pop-tags" id="pop-tg"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const CREDS={admin:"food123"};
+const FLAGS={Japan:"🇯🇵",India:"🇮🇳",USA:"🇺🇸",Thailand:"🇹🇭",Turkey:"🇹🇷",Mexico:"🇲🇽",Israel:"🇮🇱",Lebanon:"🇱🇧","South Africa":"🇿🇦",Nigeria:"🇳🇬",Egypt:"🇪🇬"};
+const CC=["fc-y","fc-p","fc-g","fc-l"];
+const PC={"fc-y":"#E8980A","fc-p":"#C8607A","fc-g":"#1A6B38","fc-l":"#4A6AB8"};
+const METHODS=["Assembled","Baked","Boiled","Boiled/Grilled","Fried","Grilled","Pan-Fried","Stewed","Stir-Fried"];
+const HEALTHY=["Grilled","Boiled","Steamed","Boiled/Grilled"];
+let DB=[
+  {id:1,name:"Takoyaki",country:"Japan",city:"Osaka",method:"Fried",veg:"No",price:3.28,rating:4.3,ingredients:"Octopus, Flour Batter, Bonito Flakes, Green Onions",description:"Crispy ball-shaped snack."},
+  {id:2,name:"Vada Pav",country:"India",city:"Mumbai",method:"Fried",veg:"Yes",price:2.37,rating:2.5,ingredients:"Potato, Spices, Bread Bun, Chutney",description:"Mumbai's favourite street burger."},
+  {id:3,name:"Funnel Cake",country:"USA",city:"Texas",method:"Fried",veg:"Yes",price:2.78,rating:1.2,ingredients:"Batter, Sugar, Oil",description:"Deep-fried batter with sugar."},
+  {id:4,name:"Kathi Roll",country:"India",city:"Kolkata",method:"Grilled",veg:"No",price:1.89,rating:4.0,ingredients:"Flatbread, Egg, Chicken, Onions, Chutney",description:"Smoky Kolkata street roll."},
+  {id:5,name:"Tacos al Pastor",country:"Mexico",city:"Mexico City",method:"Grilled",veg:"No",price:1.11,rating:5.0,ingredients:"Pork, Pineapple, Tortilla, Cilantro, Onion",description:"Classic Mexico City taco."},
+  {id:6,name:"Pad Thai",country:"Thailand",city:"Bangkok",method:"Stir-Fried",veg:"No",price:0.22,rating:4.8,ingredients:"Rice Noodles, Shrimp, Egg, Bean Sprouts, Peanuts",description:"Iconic Thai noodle dish."},
+  {id:7,name:"Pani Puri",country:"India",city:"Mumbai",method:"Fried",veg:"Yes",price:0.54,rating:5.0,ingredients:"Wheat Puri, Tamarind Water, Chickpeas, Spices",description:"Tangy hollow puris."},
+  {id:8,name:"Simit",country:"Turkey",city:"Istanbul",method:"Baked",veg:"Yes",price:2.63,rating:3.0,ingredients:"Flour, Sesame Seeds, Yeast",description:"Sesame bread ring."},
+  {id:9,name:"Dosa",country:"India",city:"Delhi",method:"Pan-Fried",veg:"Yes",price:1.24,rating:4.5,ingredients:"Rice, Lentils, Sambar, Coconut Chutney",description:"Thin crispy crepe."},
+  {id:10,name:"Gyoza",country:"Japan",city:"Tokyo",method:"Pan-Fried",veg:"No",price:3.8,rating:4.2,ingredients:"Pork, Cabbage, Garlic, Ginger",description:"Pan-fried Japanese dumplings."},
+  {id:11,name:"Ramen",country:"Japan",city:"Tokyo",method:"Boiled",veg:"No",price:4.2,rating:4.5,ingredients:"Noodles, Pork Broth, Chashu, Nori, Egg",description:"Rich noodle soup."},
+  {id:12,name:"Shawarma",country:"Lebanon",city:"Beirut",method:"Grilled",veg:"No",price:2.8,rating:4.1,ingredients:"Chicken, Flatbread, Garlic Sauce, Vegetables",description:"Slow-roasted meat wrap."},
+  {id:13,name:"Elote",country:"Mexico",city:"Guadalajara",method:"Grilled",veg:"Yes",price:1.5,rating:4.4,ingredients:"Corn, Mayo, Chili Powder, Lime, Cotija Cheese",description:"Mexican street corn."},
+  {id:14,name:"Falafel",country:"Israel",city:"Tel Aviv",method:"Fried",veg:"Yes",price:3.1,rating:3.8,ingredients:"Chickpeas, Fresh Herbs, Spices, Pita, Tahini",description:"Chickpea fritters in pita."},
+  {id:15,name:"Gözleme",country:"Turkey",city:"Ankara",method:"Pan-Fried",veg:"Yes",price:2.57,rating:5.0,ingredients:"Flatbread, Spinach, Feta Cheese, Butter",description:"Turkish stuffed flatbread."},
+  {id:16,name:"Roti Sai Mai",country:"Thailand",city:"Ayutthaya",method:"Assembled",veg:"Yes",price:2.33,rating:5.0,ingredients:"Rice Flour Roti, Palm Sugar Threads, Pandan",description:"Sweet Thai candy roti."},
+  {id:17,name:"Quesadilla",country:"Mexico",city:"Puebla",method:"Pan-Fried",veg:"Yes",price:0.25,rating:4.9,ingredients:"Corn Tortilla, Oaxaca Cheese, Peppers, Corn",description:"Cheesy street quesadilla."},
+  {id:18,name:"Suya",country:"Nigeria",city:"Lagos",method:"Grilled",veg:"No",price:2.0,rating:4.0,ingredients:"Beef, Peanuts, Yaji Spice, Onion, Tomato",description:"Nigerian spiced skewers."},
+];
+let nextId=19;
+let chartsBuilt=false;
+let ch2Inst,ch3Inst;
+let currentOp='add';
+
+function getStats(){
+  const total=DB.length;
+  const countries=[...new Set(DB.map(f=>f.country))];
+  const avgRating=total?+(DB.reduce((s,f)=>s+f.rating,0)/total).toFixed(2):0;
+  const avgPrice=total?+(DB.reduce((s,f)=>s+f.price,0)/total).toFixed(2):0;
+  const cc={};DB.forEach(f=>cc[f.country]=(cc[f.country]||0)+1);
+  const topC=Object.entries(cc).sort((a,b)=>b[1]-a[1])[0]||['—',0];
+  const veg=DB.filter(f=>f.veg==='Yes').length,nv=total-veg;
+  const healthy=DB.filter(f=>HEALTHY.includes(f.method)).length,unhealthy=total-healthy;
+  return{total,countries,avgRating,avgPrice,topC,veg,nv,healthy,unhealthy};
+}
+function updateKPIs(){
+  const s=getStats();
+  document.getElementById('kpi-total').textContent=s.total.toLocaleString();
+  document.getElementById('kpi-countries').textContent=`across ${s.countries.length} countries`;
+  document.getElementById('kpi-rating').textContent=s.avgRating.toFixed(2);
+  document.getElementById('kpi-price').textContent='$'+s.avgPrice.toFixed(2);
+  document.getElementById('kpi-top').textContent=(FLAGS[s.topC[0]]||'🌍')+' '+s.topC[0];
+  document.getElementById('kpi-top-sub').textContent=s.topC[1]+' dishes';
+  document.getElementById('db-sub').textContent=`${s.total} dishes across ${s.countries.length} countries — here's your overview.`;
+  document.getElementById('topbar-sub').textContent=`${s.total} dishes · ${s.countries.length} countries`;
+  const vp=Math.round(s.veg*100/(s.total||1));
+  document.getElementById('leg-veg').textContent=`Vegetarian ${vp}%`;
+  document.getElementById('leg-nv').textContent=`Non-Veg ${100-vp}%`;
+  const hp=Math.round(s.healthy*100/(s.total||1));
+  document.getElementById('leg-h').textContent=`Healthy ${hp}%`;
+  document.getElementById('leg-uh').textContent=`Unhealthy ${100-hp}%`;
+  if(ch2Inst){ch2Inst.data.datasets[0].data=[s.veg,s.nv];ch2Inst.update();}
+  if(ch3Inst){ch3Inst.data.datasets[0].data=[s.healthy,s.unhealthy];ch3Inst.update();}
+}
+function updateDeepTables(){
+  const over=[...DB].filter(f=>f.price>0&&f.rating>0).sort((a,b)=>(b.price-b.rating)-(a.price-a.rating)).slice(0,6);
+  const avgP=DB.reduce((s,f)=>s+f.price,0)/(DB.length||1);
+  const gems=[...DB].filter(f=>f.rating>4&&f.price<avgP).sort((a,b)=>b.rating-a.rating).slice(0,6);
+  document.getElementById('over-body').innerHTML=over.map(r=>`<tr><td style="font-weight:700">${r.name}</td><td>${r.country}</td><td>$${r.price.toFixed(2)}</td><td>${r.rating.toFixed(1)}</td><td><span class="bdg">+${(r.price-r.rating).toFixed(2)}</span></td></tr>`).join('');
+  document.getElementById('gem-body').innerHTML=gems.map(r=>`<tr><td style="font-weight:700">${r.name}</td><td>${r.country}</td><td style="font-weight:700">$${r.price.toFixed(2)}</td><td><span class="bdg">★ ${r.rating.toFixed(1)}</span></td></tr>`).join('');
+}
+function rebuildCountryFilter(){
+  const s=document.getElementById('f-co');const cur=s.value;
+  s.innerHTML='<option value="">All Countries</option>'+[...new Set(DB.map(f=>f.country))].sort().map(c=>`<option${c===cur?' selected':''}>${c}</option>`).join('');
+}
+function filterCountryChange(){
+  const c=document.getElementById('f-co').value;
+  const s=document.getElementById('f-ci');
+  const cities=c?[...new Set(DB.filter(f=>f.country===c).map(f=>f.city))].sort():[...new Set(DB.map(f=>f.city))].sort();
+  s.innerHTML='<option value="">All Cities</option>'+cities.map(ct=>`<option>${ct}</option>`).join('');
+}
+function renderCards(foods){
+  const g=document.getElementById('food-grid');if(!g)return;
+  g.innerHTML='';
+  document.getElementById('res-ct').textContent=`Showing ${foods.length} dish${foods.length!==1?'es':''}`;
+  foods.forEach((f,i)=>{
+    const cc=CC[i%4];const stars='★'.repeat(Math.round(f.rating))+'☆'.repeat(5-Math.round(f.rating));
+    const d=document.createElement('div');d.className=`fc ${cc}`;
+    d.innerHTML=`<div class="fc-blob"></div><div class="fc-top"><span class="fc-flag">${FLAGS[f.country]||'🌍'} ${f.country}</span><div class="fc-vdot ${f.veg==='Yes'?'veg':'nv'}">${f.veg==='Yes'?'V':'N'}</div></div><div class="fc-name">${f.name}</div><div class="fc-city">${f.city}</div><div class="fc-row"><div class="fc-price">$${f.price.toFixed(2)}</div><div class="fc-stars">${stars}</div></div><span class="fc-method">${f.method}</span>`;
+    d.onclick=()=>openPopup(f,cc);g.appendChild(d);
+  });
+}
+function applyF(){
+  const co=document.getElementById('f-co').value,ci=document.getElementById('f-ci').value,ty=document.getElementById('f-ty').value,me=document.getElementById('f-me').value,mp=parseFloat(document.getElementById('f-pr').value);
+  renderCards(DB.filter(f=>(!co||f.country===co)&&(!ci||f.city===ci)&&(!ty||(ty==='Vegetarian'?f.veg==='Yes':f.veg==='No'))&&(!me||f.method===me)&&f.price<=mp));
+}
+function clearF(){
+  ['f-co','f-ty','f-me'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-ci').innerHTML='<option value="">All Cities</option>';
+  document.getElementById('f-pr').value=50;document.getElementById('pv2').textContent='$50.00';
+  renderCards(DB);
+}
+function syncAll(){
+  updateKPIs();updateDeepTables();rebuildCountryFilter();
+  if(document.getElementById('pv-ex').classList.contains('on'))renderCards(DB);
+  if(document.getElementById('pv-crud').classList.contains('on'))setOp(currentOp);
+}
+function doLogin(){
+  const u=document.getElementById('a-user').value.trim(),p=document.getElementById('a-pass').value;
+  const err=document.getElementById('a-err');
+  if(CREDS[u]&&CREDS[u]===p){
+    err.style.display='none';
+    document.getElementById('pv-auth').classList.remove('on');
+    document.getElementById('main-top').style.display='block';
+    showPage('db');
+    if(!chartsBuilt){buildCharts();chartsBuilt=true;}
+    syncAll();
+  }else{err.style.display='block';}
+}
+function doLogout(){
+  document.querySelectorAll('.pv').forEach(p=>p.classList.remove('on'));
+  document.getElementById('main-top').style.display='none';
+  document.getElementById('pv-auth').classList.add('on');
+  document.getElementById('a-user').value='';document.getElementById('a-pass').value='';
+  document.getElementById('a-err').style.display='none';
+}
+function showPage(id){
+  ['db','ex','crud'].forEach(p=>{document.getElementById('pv-'+p).classList.remove('on');document.getElementById('tab-'+p).classList.remove('on');});
+  document.getElementById('pv-'+id).classList.add('on');document.getElementById('tab-'+id).classList.add('on');
+  if(id==='ex'){rebuildCountryFilter();renderCards(DB);}
+  if(id==='crud')setOp(currentOp);
+}
+function openPopup(f,cc){
+  document.getElementById('pop-hdr').style.background=PC[cc]||'#1A4A30';
+  document.getElementById('pop-nm').textContent=f.name;
+  document.getElementById('pop-lc').textContent=`${FLAGS[f.country]||''} ${f.city}, ${f.country}`;
+  document.getElementById('pop-pr').textContent='$'+f.price.toFixed(2);
+  document.getElementById('pop-rt').textContent='★ '+f.rating.toFixed(1);
+  document.getElementById('pop-mt').textContent=f.method;
+  document.getElementById('pop-ig').textContent=f.ingredients;
+  document.getElementById('pop-tg').innerHTML=`<span class="pop-tag ${f.veg==='Yes'?'veg':'nv'}">${f.veg==='Yes'?'Vegetarian':'Non-Vegetarian'}</span><span class="pop-tag">${f.method}</span><span class="pop-tag">${FLAGS[f.country]||''} ${f.country}</span>`;
+  document.getElementById('popup').classList.add('open');
+}
+function closeP(e){if(e.target===document.getElementById('popup'))document.getElementById('popup').classList.remove('open');}
+
+/* ══ CRUD FORMS ══ */
+function mOpts(sel=''){return'<option value="" disabled'+(sel?'':' selected')+'>Select method</option>'+METHODS.map(m=>`<option value="${m}"${m===sel?' selected':''}>${m}</option>`).join('');}
+function tOpts(sel=''){return'<option value="" disabled'+(sel?'':' selected')+'>Select type</option><option value="Vegetarian"'+(sel==='Vegetarian'?' selected':'')+'>Vegetarian</option><option value="Non-Vegetarian"'+(sel==='Non-Vegetarian'?' selected':'')+'>Non-Vegetarian</option>';}
+/* dish list for update/delete — plain text options on white background */
+function dishOpts(){return'<option value="">— choose a dish —</option>'+DB.map(f=>`<option value="${f.id}">#${f.id} — ${f.name} (${f.city}, ${f.country})</option>`).join('');}
+
+function setOp(op){
+  currentOp=op;
+  ['add','upd','del','view'].forEach(o=>document.getElementById('op-'+o).classList.remove('on'));
+  document.getElementById('op-'+op).classList.add('on');
+  const r=document.getElementById('crud-right');
+  if(op==='add')r.innerHTML=addForm();
+  else if(op==='upd')r.innerHTML=updForm();
+  else if(op==='del')r.innerHTML=delForm();
+  else r.innerHTML=viewTable();
+}
+
+function addForm(){return`<div class="form-card">
+  <div class="form-card-title">Add new dish</div>
+  <div class="form-card-sub">All fields required except description.</div>
+  <div class="form-grid">
+    <div class="f-group fg-full"><label class="f-lbl">Dish Name</label><input class="f-inp" id="c-name" placeholder="e.g. My Special Dish"></div>
+    <div class="f-group"><label class="f-lbl">Country</label><input class="f-inp" id="c-country" placeholder="e.g. India, France…"></div>
+    <div class="f-group"><label class="f-lbl">City</label><input class="f-inp" id="c-city" placeholder="e.g. Mumbai, Lyon…"></div>
+    <div class="f-group"><label class="f-lbl">Cooking Method</label><select class="f-sel" id="c-method">${mOpts()}</select></div>
+    <div class="f-group"><label class="f-lbl">Food Type</label><select class="f-sel" id="c-type">${tOpts()}</select></div>
+    <div class="f-group"><label class="f-lbl">Price (USD)</label><input class="f-inp" id="c-price" type="number" min="0.01" step="0.01" placeholder="e.g. 3.50"></div>
+    <div class="f-group"><label class="f-lbl">Rating (0–5)</label><input class="f-inp" id="c-rating" type="number" min="0" max="5" step="0.1" placeholder="e.g. 4.7"></div>
+    <div class="f-group fg-full"><label class="f-lbl">Ingredients</label><input class="f-inp" id="c-ing" placeholder="e.g. Cheese, Spices, Flour"></div>
+    <div class="f-group fg-full"><label class="f-lbl">Description <span class="opt-tag">optional</span></label><input class="f-inp" id="c-desc" placeholder="Short description (optional)"></div>
+  </div>
+  <div class="btn-row"><button class="btn-add" onclick="doAdd()">Add Dish</button><button class="btn-reset" onclick="setOp('add')">Reset</button></div>
+</div>`;}
+
+function updForm(){return`<div class="form-card">
+  <div class="form-card-title">Update existing dish</div>
+  <div class="form-card-sub">Select a dish to load its values. Description is optional.</div>
+  <div class="form-grid">
+    <div class="f-group fg-full"><label class="f-lbl">Select Dish</label><select class="f-sel" id="u-id" onchange="loadForUpdate()">${dishOpts()}</select></div>
+    <div class="f-group fg-full"><label class="f-lbl">Dish Name</label><input class="f-inp" id="u-name" placeholder="Dish name"></div>
+    <div class="f-group"><label class="f-lbl">Country</label><input class="f-inp" id="u-country" placeholder="e.g. India, France…"></div>
+    <div class="f-group"><label class="f-lbl">City</label><input class="f-inp" id="u-city" placeholder="e.g. Mumbai, Lyon…"></div>
+    <div class="f-group"><label class="f-lbl">Cooking Method</label><select class="f-sel" id="u-method">${mOpts()}</select></div>
+    <div class="f-group"><label class="f-lbl">Food Type</label><select class="f-sel" id="u-type">${tOpts()}</select></div>
+    <div class="f-group"><label class="f-lbl">Price (USD)</label><input class="f-inp" id="u-price" type="number" min="0.01" step="0.01" placeholder="e.g. 2.80"></div>
+    <div class="f-group"><label class="f-lbl">Rating (0–5)</label><input class="f-inp" id="u-rating" type="number" min="0" max="5" step="0.1" placeholder="e.g. 4.3"></div>
+    <div class="f-group fg-full"><label class="f-lbl">Ingredients</label><input class="f-inp" id="u-ing" placeholder="Ingredients"></div>
+    <div class="f-group fg-full"><label class="f-lbl">Description <span class="opt-tag">optional</span></label><input class="f-inp" id="u-desc" placeholder="Short description (optional)"></div>
+  </div>
+  <div class="btn-row"><button class="btn-upd" onclick="doUpdate()">Save Changes</button><button class="btn-reset" onclick="setOp('upd')">Reset</button></div>
+</div>`;}
+
+function delForm(){return`<div class="form-card">
+  <div class="form-card-title">Delete a dish</div>
+  <div class="form-card-sub">Select a dish and confirm. This is permanent and syncs everywhere.</div>
+  <div class="form-grid">
+    <div class="f-group fg-full">
+      <label class="f-lbl">Select Dish to Delete</label>
+      <select class="del-sel" id="d-id" onchange="showDelPreview()">${dishOpts()}</select>
+    </div>
+  </div>
+  <div id="d-warn" class="del-warn"></div>
+  <div class="btn-row"><button class="btn-del" onclick="doDelete()">Delete Dish</button><button class="btn-reset" onclick="setOp('del')">Cancel</button></div>
+</div>`;}
+
+function viewTable(){
+  const rows=DB.map(f=>`<tr><td style="font-weight:700;color:#E8980A">#${f.id}</td><td style="font-weight:600">${f.name}</td><td>${FLAGS[f.country]||''} ${f.country}</td><td>${f.city}</td><td>$${f.price.toFixed(2)}</td><td>★ ${f.rating.toFixed(1)}</td><td><span class="${f.veg==='Yes'?'rbv':'rbnv'}">${f.veg==='Yes'?'Veg':'Non-Veg'}</span></td><td>${f.method}</td><td><button class="re-btn" onclick="editFromTable(${f.id})">Edit</button><button class="rd-btn" onclick="delFromTable(${f.id})">Del</button></td></tr>`).join('');
+  return`<div class="rec-table-wrap"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div><div style="font-size:16px;font-weight:800;color:#1C1B2E">All dishes</div><div style="font-size:12px;color:#AAA;margin-top:2px">${DB.length} records</div></div><button class="btn-add" style="padding:8px 18px;font-size:12px" onclick="setOp('add')">+ Add New</button></div><table class="rec-table"><thead><tr><th>ID</th><th>Dish</th><th>Country</th><th>City</th><th>Price</th><th>Rating</th><th>Type</th><th>Method</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>`;}
+
+function showDelPreview(){
+  const id=parseInt(document.getElementById('d-id').value);
+  const f=DB.find(x=>x.id===id);
+  const w=document.getElementById('d-warn');
+  if(f){w.style.display='block';w.innerHTML=`<strong>⚠ Will permanently delete:</strong> <em>${f.name}</em> — ${f.city}, ${f.country}`;}
+  else w.style.display='none';
+}
+function loadForUpdate(){
+  const id=parseInt(document.getElementById('u-id').value);
+  const f=DB.find(x=>x.id===id);if(!f)return;
+  document.getElementById('u-name').value=f.name;
+  document.getElementById('u-country').value=f.country;
+  document.getElementById('u-city').value=f.city;
+  document.getElementById('u-method').value=f.method;
+  document.getElementById('u-type').value=f.veg==='Yes'?'Vegetarian':'Non-Vegetarian';
+  document.getElementById('u-price').value=f.price;
+  document.getElementById('u-rating').value=f.rating;
+  document.getElementById('u-ing').value=f.ingredients;
+  document.getElementById('u-desc').value=f.description||'';
+}
+function editFromTable(id){setOp('upd');setTimeout(()=>{const s=document.getElementById('u-id');if(s){s.value=id;loadForUpdate();}},30);}
+function delFromTable(id){setOp('del');setTimeout(()=>{const s=document.getElementById('d-id');if(s){s.value=id;showDelPreview();}},30);}
+function gv(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function doAdd(){
+  const n=gv('c-name'),co=gv('c-country'),ci=gv('c-city'),me=gv('c-method'),ty=gv('c-type'),pr=parseFloat(gv('c-price')),ra=parseFloat(gv('c-rating')),ing=gv('c-ing'),desc=gv('c-desc');
+  if(!n){showToast('Dish name is required','err');return;}
+  if(!co){showToast('Country is required','err');return;}
+  if(!ci){showToast('City is required','err');return;}
+  if(!me){showToast('Cooking method is required','err');return;}
+  if(!ty){showToast('Food type is required','err');return;}
+  if(isNaN(pr)||pr<=0){showToast('Enter a valid price','err');return;}
+  if(isNaN(ra)||ra<0||ra>5){showToast('Rating must be 0–5','err');return;}
+  DB.push({id:nextId++,name:n,country:co,city:ci,method:me,veg:ty==='Vegetarian'?'Yes':'No',price:pr,rating:ra,ingredients:ing,description:desc});
+  syncAll();showToast(`✓ "${n}" added to Zestreet`);setOp('add');
+}
+function doUpdate(){
+  const id=parseInt(gv('u-id'));const f=DB.find(x=>x.id===id);
+  if(!f){showToast('Please select a dish','err');return;}
+  const n=gv('u-name'),co=gv('u-country'),ci=gv('u-city'),me=gv('u-method'),ty=gv('u-type'),pr=parseFloat(gv('u-price')),ra=parseFloat(gv('u-rating')),ing=gv('u-ing'),desc=gv('u-desc');
+  if(!n||!co||!ci||!me||!ty){showToast('Please fill all required fields','err');return;}
+  if(isNaN(pr)||pr<=0){showToast('Enter a valid price','err');return;}
+  if(isNaN(ra)||ra<0||ra>5){showToast('Rating must be 0–5','err');return;}
+  Object.assign(f,{name:n,country:co,city:ci,method:me,veg:ty==='Vegetarian'?'Yes':'No',price:pr,rating:ra,ingredients:ing,description:desc});
+  syncAll();showToast(`✓ "${n}" updated across Zestreet`);setOp('upd');
+}
+function doDelete(){
+  const id=parseInt(gv('d-id'));const idx=DB.findIndex(x=>x.id===id);
+  if(idx<0){showToast('Please select a dish','err');return;}
+  const name=DB[idx].name;DB.splice(idx,1);
+  syncAll();showToast(`✓ "${name}" removed from Zestreet`);setOp('del');
+}
+function showToast(msg,type='ok'){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.className='toast show'+(type==='err'?' err':'');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function buildCharts(){
+  const s=getStats();
+  const bo={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
+  new Chart(document.getElementById('ch1'),{type:'bar',data:{labels:['Cheap (<$2)','Moderate','Expensive (>$4)'],datasets:[{data:[
+    +(DB.filter(f=>f.price<2).reduce((a,f)=>a+f.rating,0)/(DB.filter(f=>f.price<2).length||1)).toFixed(2),
+    +(DB.filter(f=>f.price>=2&&f.price<=4).reduce((a,f)=>a+f.rating,0)/(DB.filter(f=>f.price>=2&&f.price<=4).length||1)).toFixed(2),
+    +(DB.filter(f=>f.price>4).reduce((a,f)=>a+f.rating,0)/(DB.filter(f=>f.price>4).length||1)).toFixed(2)
+  ],backgroundColor:['rgba(255,255,255,.9)','rgba(255,255,255,.65)','rgba(255,255,255,.45)'],borderRadius:6,barPercentage:.5}]},options:{...bo,scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,.7)',font:{size:10}}},y:{min:0,max:5,grid:{color:'rgba(255,255,255,.12)'},ticks:{color:'rgba(255,255,255,.7)',font:{size:10}}}}}});
+  ch2Inst=new Chart(document.getElementById('ch2'),{type:'doughnut',data:{labels:['Vegetarian','Non-Vegetarian'],datasets:[{data:[s.veg,s.nv],backgroundColor:['#5C1A30','#D4537E'],borderWidth:0,hoverOffset:4}]},options:{...bo,cutout:'62%'}});
+  ch3Inst=new Chart(document.getElementById('ch3'),{type:'doughnut',data:{labels:['Healthy','Unhealthy'],datasets:[{data:[s.healthy,s.unhealthy],backgroundColor:['rgba(255,255,255,.88)','rgba(255,255,255,.3)'],borderWidth:0,hoverOffset:4}]},options:{...bo,cutout:'62%'}});
+  const fd=(()=>{const cc={};DB.forEach(f=>{cc[f.country]=cc[f.country]||{t:0,fr:0};cc[f.country].t++;if(f.method==='Fried')cc[f.country].fr++;});return Object.entries(cc).map(([c,v])=>({c,p:Math.round(v.fr*100/v.t)})).sort((a,b)=>b.p-a.p).slice(0,6);})();
+  new Chart(document.getElementById('ch4'),{type:'bar',data:{labels:fd.map(x=>x.c),datasets:[{data:fd.map(x=>x.p),backgroundColor:'#3A5A9A',borderRadius:[0,4,4,0],barPercentage:.55}]},options:{...bo,indexAxis:'y',scales:{x:{min:0,max:105,grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#1A2E7A',font:{size:10},callback:v=>v+'%'}},y:{grid:{display:false},ticks:{color:'#1A2E7A',font:{size:10}}}}}});
+  const cc2={};DB.forEach(f=>cc2[f.city]=(cc2[f.city]||0)+1);
+  const top10=Object.entries(cc2).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  new Chart(document.getElementById('ch5'),{type:'bar',data:{labels:top10.map(x=>x[0]),datasets:[{data:top10.map(x=>x[1]),backgroundColor:'#1C1B2E',borderRadius:4,barPercentage:.55}]},options:{...bo,scales:{x:{grid:{display:false},ticks:{color:'#555',font:{size:9},maxRotation:40,autoSkip:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#555',font:{size:10}}}}}});
+  const top6val=DB.filter(f=>f.price>0).map(f=>({name:f.name,v:+(f.rating/f.price).toFixed(2)})).sort((a,b)=>b.v-a.v).slice(0,6);
+  new Chart(document.getElementById('ch6'),{type:'bar',data:{labels:top6val.map(x=>x.name),datasets:[{data:top6val.map(x=>x.v),backgroundColor:'#1A6B38',borderRadius:[0,4,4,0],barPercentage:.5}]},options:{...bo,indexAxis:'y',scales:{x:{grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#1A6B38',font:{size:10}}},y:{grid:{display:false},ticks:{color:'#1A6B38',font:{size:10}}}}}});
+  updateKPIs();updateDeepTables();
+}
+</script>
