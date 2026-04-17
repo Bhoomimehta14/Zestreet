@@ -517,16 +517,35 @@ function syncAll(){
   if(document.getElementById('pv-crud').classList.contains('on'))setOp(currentOp);
 }
 function doLogin(){
-  const u=document.getElementById('a-user').value.trim(),p=document.getElementById('a-pass').value;
-  const err=document.getElementById('a-err');
-  if(CREDS[u]&&CREDS[u]===p){
-    err.style.display='none';
-    document.getElementById('pv-auth').classList.remove('on');
-    document.getElementById('main-top').style.display='block';
-    showPage('db');
-    if(!chartsBuilt){buildCharts();chartsBuilt=true;}
-    syncAll();
-  }else{err.style.display='block';}
+  const u = document.getElementById('a-user').value.trim();
+  const p = document.getElementById('a-pass').value;
+  const err = document.getElementById('a-err');
+
+  fetch("https://zestreet-api.onrender.com/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      username: u,
+      password: p
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.message) {
+      err.style.display = 'none';
+
+      document.getElementById('pv-auth').classList.remove('on');
+      document.getElementById('main-top').style.display='block';
+      showPage('db');
+
+      if(!chartsBuilt){buildCharts();chartsBuilt=true;}
+      syncAll();
+    } else {
+      err.style.display = 'block';
+    }
+  });
 }
 function doLogout(){
   document.querySelectorAll('.pv').forEach(function(p){p.classList.remove('on');});
