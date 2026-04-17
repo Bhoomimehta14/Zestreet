@@ -1,11 +1,17 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zestreet</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#F7F5F0}
 .pv{display:none}.pv.on{display:block}
 
 /* ══ AUTH ══ */
-.auth-wrap{background:#1A4A30;min-height:820px;display:flex;position:relative;overflow:hidden}
+.auth-wrap{background:#1A4A30;min-height:100vh;display:flex;position:relative;overflow:hidden}
 .bg-c{position:absolute;border-radius:50%;background:rgba(255,255,255,.055);pointer-events:none}
 .auth-left{width:50%;flex-shrink:0;background:#fff;position:relative;z-index:2;display:flex;flex-direction:column;padding:36px 40px 28px 40px}
 .wave-svg{position:absolute;top:0;right:-110px;height:100%;width:160px;z-index:3;pointer-events:none}
@@ -95,7 +101,6 @@ tr:last-child td{border-bottom:none}
 .fp{background:#1C1B2E;border-radius:18px;padding:20px 18px;position:sticky;top:72px;align-self:start}
 .fpt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.32);margin-bottom:18px}
 .fl{font-size:10.5px;color:rgba(255,255,255,.48);display:block;margin-bottom:5px;font-weight:600}
-/* explore sidebar selects — dark bg so options are always visible */
 .fp select{width:100%;background:#1C1B2E;border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:7px 10px;color:#fff;font-size:12px;outline:none;margin-bottom:14px}
 .fp select option{background:#1C1B2E;color:#fff}
 .fp input[type=range]{width:100%;accent-color:#E8980A}
@@ -148,52 +153,14 @@ tr:last-child td{border-bottom:none}
 .opt-tag{font-size:9px;background:#F0ECE4;color:#AAA;padding:2px 6px;border-radius:6px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
 .f-inp{padding:10px 13px;border:1.5px solid #E8E4DC;border-radius:10px;font-size:13px;color:#1C1B2E;outline:none;transition:border .2s;background:#fff;width:100%}
 .f-inp:focus{border-color:#E8980A}
-
-/* THE KEY FIX: manage form selects always use white bg + dark text so options render correctly in every browser */
-.f-sel{
-  padding:10px 13px;
-  border:1.5px solid #E8E4DC;
-  border-radius:10px;
-  font-size:13px;
-  color:#1C1B2E;
-  outline:none;
-  background:#fff;
-  cursor:pointer;
-  width:100%;
-  -webkit-appearance:auto;
-  appearance:auto;
-}
+.f-sel{padding:10px 13px;border:1.5px solid #E8E4DC;border-radius:10px;font-size:13px;color:#1C1B2E;outline:none;background:#fff;cursor:pointer;width:100%;-webkit-appearance:auto;appearance:auto}
 .f-sel:focus{border-color:#E8980A}
-/* all option elements inside manage form selects: explicit dark text on white */
-.f-sel option{
-  background:#fff !important;
-  color:#1C1B2E !important;
-  font-size:13px;
-}
-.f-sel option:disabled{color:#AAA !important}
-
-/* delete select special styling — red tint but still readable */
-.del-sel{
-  padding:10px 13px;
-  border:1.5px solid #F5C6C6;
-  border-radius:10px;
-  font-size:13px;
-  color:#C0392B;
-  outline:none;
-  background:#fff;
-  cursor:pointer;
-  width:100%;
-  -webkit-appearance:auto;
-  appearance:auto;
-}
+.f-sel option{background:#fff;color:#1C1B2E;font-size:13px}
+.f-sel option:disabled{color:#AAA}
+.del-sel{padding:10px 13px;border:1.5px solid #F5C6C6;border-radius:10px;font-size:13px;color:#C0392B;outline:none;background:#fff;cursor:pointer;width:100%;-webkit-appearance:auto;appearance:auto}
 .del-sel:focus{border-color:#C0392B}
-.del-sel option{
-  background:#fff !important;
-  color:#1C1B2E !important;
-  font-size:13px;
-}
-.del-sel option:first-child{color:#AAA !important}
-
+.del-sel option{background:#fff;color:#1C1B2E;font-size:13px}
+.del-sel option:first-child{color:#AAA}
 .btn-row{display:flex;gap:10px;margin-top:20px}
 .btn-add{background:#27AE60;color:#fff;border:none;border-radius:12px;padding:11px 28px;font-size:13px;font-weight:800;cursor:pointer}
 .btn-add:hover{background:#1E9451}
@@ -235,8 +202,9 @@ tr:last-child td{border-bottom:none}
 .pop-tag.veg{background:rgba(26,107,56,.35);color:#7DE8A0}
 .pop-tag.nv{background:rgba(200,50,80,.2);color:#FFAABB}
 </style>
+</head>
+<body>
 
-<h2 class="sr-only">Zestreet — Street Food Analytics</h2>
 <div id="toast" class="toast"></div>
 
 <!-- ══ AUTH ══ -->
@@ -448,7 +416,6 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const CREDS={admin:"food123"};
 const FLAGS={Japan:"🇯🇵",India:"🇮🇳",USA:"🇺🇸",Thailand:"🇹🇭",Turkey:"🇹🇷",Mexico:"🇲🇽",Israel:"🇮🇱",Lebanon:"🇱🇧","South Africa":"🇿🇦",Nigeria:"🇳🇬",Egypt:"🇪🇬"};
@@ -476,67 +443,62 @@ let DB=[
   {id:17,name:"Quesadilla",country:"Mexico",city:"Puebla",method:"Pan-Fried",veg:"Yes",price:0.25,rating:4.9,ingredients:"Corn Tortilla, Oaxaca Cheese, Peppers, Corn",description:"Cheesy street quesadilla."},
   {id:18,name:"Suya",country:"Nigeria",city:"Lagos",method:"Grilled",veg:"No",price:2.0,rating:4.0,ingredients:"Beef, Peanuts, Yaji Spice, Onion, Tomato",description:"Nigerian spiced skewers."},
 ];
-let nextId=19;
-let chartsBuilt=false;
-let ch2Inst,ch3Inst;
-let currentOp='add';
+let nextId=19,chartsBuilt=false,ch2Inst,ch3Inst,currentOp='add';
 
 function getStats(){
-  const total=DB.length;
-  const countries=[...new Set(DB.map(f=>f.country))];
-  const avgRating=total?+(DB.reduce((s,f)=>s+f.rating,0)/total).toFixed(2):0;
-  const avgPrice=total?+(DB.reduce((s,f)=>s+f.price,0)/total).toFixed(2):0;
+  const t=DB.length,cs=[...new Set(DB.map(f=>f.country))];
+  const ar=t?+(DB.reduce((s,f)=>s+f.rating,0)/t).toFixed(2):0;
+  const ap=t?+(DB.reduce((s,f)=>s+f.price,0)/t).toFixed(2):0;
   const cc={};DB.forEach(f=>cc[f.country]=(cc[f.country]||0)+1);
-  const topC=Object.entries(cc).sort((a,b)=>b[1]-a[1])[0]||['—',0];
-  const veg=DB.filter(f=>f.veg==='Yes').length,nv=total-veg;
-  const healthy=DB.filter(f=>HEALTHY.includes(f.method)).length,unhealthy=total-healthy;
-  return{total,countries,avgRating,avgPrice,topC,veg,nv,healthy,unhealthy};
+  const tc=Object.entries(cc).sort((a,b)=>b[1]-a[1])[0]||['—',0];
+  const veg=DB.filter(f=>f.veg==='Yes').length,nv=t-veg;
+  const h=DB.filter(f=>HEALTHY.includes(f.method)).length,uh=t-h;
+  return{total:t,countries:cs,avgRating:ar,avgPrice:ap,topC:tc,veg,nv,healthy:h,unhealthy:uh};
 }
 function updateKPIs(){
   const s=getStats();
   document.getElementById('kpi-total').textContent=s.total.toLocaleString();
-  document.getElementById('kpi-countries').textContent=`across ${s.countries.length} countries`;
+  document.getElementById('kpi-countries').textContent='across '+s.countries.length+' countries';
   document.getElementById('kpi-rating').textContent=s.avgRating.toFixed(2);
   document.getElementById('kpi-price').textContent='$'+s.avgPrice.toFixed(2);
   document.getElementById('kpi-top').textContent=(FLAGS[s.topC[0]]||'🌍')+' '+s.topC[0];
   document.getElementById('kpi-top-sub').textContent=s.topC[1]+' dishes';
-  document.getElementById('db-sub').textContent=`${s.total} dishes across ${s.countries.length} countries — here's your overview.`;
-  document.getElementById('topbar-sub').textContent=`${s.total} dishes · ${s.countries.length} countries`;
+  document.getElementById('db-sub').textContent=s.total+' dishes across '+s.countries.length+' countries — here\'s your overview.';
+  document.getElementById('topbar-sub').textContent=s.total+' dishes · '+s.countries.length+' countries';
   const vp=Math.round(s.veg*100/(s.total||1));
-  document.getElementById('leg-veg').textContent=`Vegetarian ${vp}%`;
-  document.getElementById('leg-nv').textContent=`Non-Veg ${100-vp}%`;
+  document.getElementById('leg-veg').textContent='Vegetarian '+vp+'%';
+  document.getElementById('leg-nv').textContent='Non-Veg '+(100-vp)+'%';
   const hp=Math.round(s.healthy*100/(s.total||1));
-  document.getElementById('leg-h').textContent=`Healthy ${hp}%`;
-  document.getElementById('leg-uh').textContent=`Unhealthy ${100-hp}%`;
+  document.getElementById('leg-h').textContent='Healthy '+hp+'%';
+  document.getElementById('leg-uh').textContent='Unhealthy '+(100-hp)+'%';
   if(ch2Inst){ch2Inst.data.datasets[0].data=[s.veg,s.nv];ch2Inst.update();}
   if(ch3Inst){ch3Inst.data.datasets[0].data=[s.healthy,s.unhealthy];ch3Inst.update();}
 }
 function updateDeepTables(){
   const over=[...DB].filter(f=>f.price>0&&f.rating>0).sort((a,b)=>(b.price-b.rating)-(a.price-a.rating)).slice(0,6);
-  const avgP=DB.reduce((s,f)=>s+f.price,0)/(DB.length||1);
-  const gems=[...DB].filter(f=>f.rating>4&&f.price<avgP).sort((a,b)=>b.rating-a.rating).slice(0,6);
-  document.getElementById('over-body').innerHTML=over.map(r=>`<tr><td style="font-weight:700">${r.name}</td><td>${r.country}</td><td>$${r.price.toFixed(2)}</td><td>${r.rating.toFixed(1)}</td><td><span class="bdg">+${(r.price-r.rating).toFixed(2)}</span></td></tr>`).join('');
-  document.getElementById('gem-body').innerHTML=gems.map(r=>`<tr><td style="font-weight:700">${r.name}</td><td>${r.country}</td><td style="font-weight:700">$${r.price.toFixed(2)}</td><td><span class="bdg">★ ${r.rating.toFixed(1)}</span></td></tr>`).join('');
+  const ap=DB.reduce((s,f)=>s+f.price,0)/(DB.length||1);
+  const gems=[...DB].filter(f=>f.rating>4&&f.price<ap).sort((a,b)=>b.rating-a.rating).slice(0,6);
+  document.getElementById('over-body').innerHTML=over.map(r=>'<tr><td style="font-weight:700">'+r.name+'</td><td>'+r.country+'</td><td>$'+r.price.toFixed(2)+'</td><td>'+r.rating.toFixed(1)+'</td><td><span class="bdg">+'+( r.price-r.rating).toFixed(2)+'</span></td></tr>').join('');
+  document.getElementById('gem-body').innerHTML=gems.map(r=>'<tr><td style="font-weight:700">'+r.name+'</td><td>'+r.country+'</td><td style="font-weight:700">$'+r.price.toFixed(2)+'</td><td><span class="bdg">★ '+r.rating.toFixed(1)+'</span></td></tr>').join('');
 }
 function rebuildCountryFilter(){
-  const s=document.getElementById('f-co');const cur=s.value;
-  s.innerHTML='<option value="">All Countries</option>'+[...new Set(DB.map(f=>f.country))].sort().map(c=>`<option${c===cur?' selected':''}>${c}</option>`).join('');
+  const s=document.getElementById('f-co'),cur=s.value;
+  s.innerHTML='<option value="">All Countries</option>'+[...new Set(DB.map(f=>f.country))].sort().map(c=>'<option'+(c===cur?' selected':'')+'>'+c+'</option>').join('');
 }
 function filterCountryChange(){
-  const c=document.getElementById('f-co').value;
-  const s=document.getElementById('f-ci');
+  const c=document.getElementById('f-co').value,s=document.getElementById('f-ci');
   const cities=c?[...new Set(DB.filter(f=>f.country===c).map(f=>f.city))].sort():[...new Set(DB.map(f=>f.city))].sort();
-  s.innerHTML='<option value="">All Cities</option>'+cities.map(ct=>`<option>${ct}</option>`).join('');
+  s.innerHTML='<option value="">All Cities</option>'+cities.map(ct=>'<option>'+ct+'</option>').join('');
 }
 function renderCards(foods){
   const g=document.getElementById('food-grid');if(!g)return;
-  g.innerHTML='';
-  document.getElementById('res-ct').textContent=`Showing ${foods.length} dish${foods.length!==1?'es':''}`;
-  foods.forEach((f,i)=>{
-    const cc=CC[i%4];const stars='★'.repeat(Math.round(f.rating))+'☆'.repeat(5-Math.round(f.rating));
-    const d=document.createElement('div');d.className=`fc ${cc}`;
-    d.innerHTML=`<div class="fc-blob"></div><div class="fc-top"><span class="fc-flag">${FLAGS[f.country]||'🌍'} ${f.country}</span><div class="fc-vdot ${f.veg==='Yes'?'veg':'nv'}">${f.veg==='Yes'?'V':'N'}</div></div><div class="fc-name">${f.name}</div><div class="fc-city">${f.city}</div><div class="fc-row"><div class="fc-price">$${f.price.toFixed(2)}</div><div class="fc-stars">${stars}</div></div><span class="fc-method">${f.method}</span>`;
-    d.onclick=()=>openPopup(f,cc);g.appendChild(d);
+  g.innerHTML='';document.getElementById('res-ct').textContent='Showing '+foods.length+' dish'+(foods.length!==1?'es':'');
+  foods.forEach(function(f,i){
+    const cc=CC[i%4],stars='★'.repeat(Math.round(f.rating))+'☆'.repeat(5-Math.round(f.rating));
+    const d=document.createElement('div');d.className='fc '+cc;
+    d.innerHTML='<div class="fc-blob"></div><div class="fc-top"><span class="fc-flag">'+(FLAGS[f.country]||'🌍')+' '+f.country+'</span><div class="fc-vdot '+(f.veg==='Yes'?'veg':'nv')+'">'+(f.veg==='Yes'?'V':'N')+'</div></div><div class="fc-name">'+f.name+'</div><div class="fc-city">'+f.city+'</div><div class="fc-row"><div class="fc-price">$'+f.price.toFixed(2)+'</div><div class="fc-stars">'+stars+'</div></div><span class="fc-method">'+f.method+'</span>';
+    d.onclick=(function(fi,fcc){return function(){openPopup(fi,fcc);};})(f,cc);
+    g.appendChild(d);
   });
 }
 function applyF(){
@@ -544,7 +506,7 @@ function applyF(){
   renderCards(DB.filter(f=>(!co||f.country===co)&&(!ci||f.city===ci)&&(!ty||(ty==='Vegetarian'?f.veg==='Yes':f.veg==='No'))&&(!me||f.method===me)&&f.price<=mp));
 }
 function clearF(){
-  ['f-co','f-ty','f-me'].forEach(id=>document.getElementById(id).value='');
+  ['f-co','f-ty','f-me'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('f-ci').innerHTML='<option value="">All Cities</option>';
   document.getElementById('f-pr').value=50;document.getElementById('pv2').textContent='$50.00';
   renderCards(DB);
@@ -567,14 +529,14 @@ function doLogin(){
   }else{err.style.display='block';}
 }
 function doLogout(){
-  document.querySelectorAll('.pv').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.pv').forEach(function(p){p.classList.remove('on');});
   document.getElementById('main-top').style.display='none';
   document.getElementById('pv-auth').classList.add('on');
   document.getElementById('a-user').value='';document.getElementById('a-pass').value='';
   document.getElementById('a-err').style.display='none';
 }
 function showPage(id){
-  ['db','ex','crud'].forEach(p=>{document.getElementById('pv-'+p).classList.remove('on');document.getElementById('tab-'+p).classList.remove('on');});
+  ['db','ex','crud'].forEach(function(p){document.getElementById('pv-'+p).classList.remove('on');document.getElementById('tab-'+p).classList.remove('on');});
   document.getElementById('pv-'+id).classList.add('on');document.getElementById('tab-'+id).classList.add('on');
   if(id==='ex'){rebuildCountryFilter();renderCards(DB);}
   if(id==='crud')setOp(currentOp);
@@ -582,25 +544,23 @@ function showPage(id){
 function openPopup(f,cc){
   document.getElementById('pop-hdr').style.background=PC[cc]||'#1A4A30';
   document.getElementById('pop-nm').textContent=f.name;
-  document.getElementById('pop-lc').textContent=`${FLAGS[f.country]||''} ${f.city}, ${f.country}`;
+  document.getElementById('pop-lc').textContent=(FLAGS[f.country]||'')+' '+f.city+', '+f.country;
   document.getElementById('pop-pr').textContent='$'+f.price.toFixed(2);
   document.getElementById('pop-rt').textContent='★ '+f.rating.toFixed(1);
   document.getElementById('pop-mt').textContent=f.method;
   document.getElementById('pop-ig').textContent=f.ingredients;
-  document.getElementById('pop-tg').innerHTML=`<span class="pop-tag ${f.veg==='Yes'?'veg':'nv'}">${f.veg==='Yes'?'Vegetarian':'Non-Vegetarian'}</span><span class="pop-tag">${f.method}</span><span class="pop-tag">${FLAGS[f.country]||''} ${f.country}</span>`;
+  document.getElementById('pop-tg').innerHTML='<span class="pop-tag '+(f.veg==='Yes'?'veg':'nv')+'">'+(f.veg==='Yes'?'Vegetarian':'Non-Vegetarian')+'</span><span class="pop-tag">'+f.method+'</span><span class="pop-tag">'+(FLAGS[f.country]||'')+' '+f.country+'</span>';
   document.getElementById('popup').classList.add('open');
 }
 function closeP(e){if(e.target===document.getElementById('popup'))document.getElementById('popup').classList.remove('open');}
 
-/* ══ CRUD FORMS ══ */
-function mOpts(sel=''){return'<option value="" disabled'+(sel?'':' selected')+'>Select method</option>'+METHODS.map(m=>`<option value="${m}"${m===sel?' selected':''}>${m}</option>`).join('');}
-function tOpts(sel=''){return'<option value="" disabled'+(sel?'':' selected')+'>Select type</option><option value="Vegetarian"'+(sel==='Vegetarian'?' selected':'')+'>Vegetarian</option><option value="Non-Vegetarian"'+(sel==='Non-Vegetarian'?' selected':'')+'>Non-Vegetarian</option>';}
-/* dish list for update/delete — plain text options on white background */
-function dishOpts(){return'<option value="">— choose a dish —</option>'+DB.map(f=>`<option value="${f.id}">#${f.id} — ${f.name} (${f.city}, ${f.country})</option>`).join('');}
+function mOpts(sel){sel=sel||'';return'<option value="" disabled'+(sel?'':' selected')+'>Select method</option>'+METHODS.map(function(m){return'<option value="'+m+'"'+(m===sel?' selected':'')+'>'+m+'</option>';}).join('');}
+function tOpts(sel){sel=sel||'';return'<option value="" disabled'+(sel?'':' selected')+'>Select type</option><option value="Vegetarian"'+(sel==='Vegetarian'?' selected':'')+'>Vegetarian</option><option value="Non-Vegetarian"'+(sel==='Non-Vegetarian'?' selected':'')+'>Non-Vegetarian</option>';}
+function dishOpts(){return'<option value="">— choose a dish —</option>'+DB.map(function(f){return'<option value="'+f.id+'">#'+f.id+' — '+f.name+' ('+f.city+', '+f.country+')</option>';}).join('');}
 
 function setOp(op){
   currentOp=op;
-  ['add','upd','del','view'].forEach(o=>document.getElementById('op-'+o).classList.remove('on'));
+  ['add','upd','del','view'].forEach(function(o){document.getElementById('op-'+o).classList.remove('on');});
   document.getElementById('op-'+op).classList.add('on');
   const r=document.getElementById('crud-right');
   if(op==='add')r.innerHTML=addForm();
@@ -608,133 +568,71 @@ function setOp(op){
   else if(op==='del')r.innerHTML=delForm();
   else r.innerHTML=viewTable();
 }
-
-function addForm(){return`<div class="form-card">
-  <div class="form-card-title">Add new dish</div>
-  <div class="form-card-sub">All fields required except description.</div>
-  <div class="form-grid">
-    <div class="f-group fg-full"><label class="f-lbl">Dish Name</label><input class="f-inp" id="c-name" placeholder="e.g. My Special Dish"></div>
-    <div class="f-group"><label class="f-lbl">Country</label><input class="f-inp" id="c-country" placeholder="e.g. India, France…"></div>
-    <div class="f-group"><label class="f-lbl">City</label><input class="f-inp" id="c-city" placeholder="e.g. Mumbai, Lyon…"></div>
-    <div class="f-group"><label class="f-lbl">Cooking Method</label><select class="f-sel" id="c-method">${mOpts()}</select></div>
-    <div class="f-group"><label class="f-lbl">Food Type</label><select class="f-sel" id="c-type">${tOpts()}</select></div>
-    <div class="f-group"><label class="f-lbl">Price (USD)</label><input class="f-inp" id="c-price" type="number" min="0.01" step="0.01" placeholder="e.g. 3.50"></div>
-    <div class="f-group"><label class="f-lbl">Rating (0–5)</label><input class="f-inp" id="c-rating" type="number" min="0" max="5" step="0.1" placeholder="e.g. 4.7"></div>
-    <div class="f-group fg-full"><label class="f-lbl">Ingredients</label><input class="f-inp" id="c-ing" placeholder="e.g. Cheese, Spices, Flour"></div>
-    <div class="f-group fg-full"><label class="f-lbl">Description <span class="opt-tag">optional</span></label><input class="f-inp" id="c-desc" placeholder="Short description (optional)"></div>
-  </div>
-  <div class="btn-row"><button class="btn-add" onclick="doAdd()">Add Dish</button><button class="btn-reset" onclick="setOp('add')">Reset</button></div>
-</div>`;}
-
-function updForm(){return`<div class="form-card">
-  <div class="form-card-title">Update existing dish</div>
-  <div class="form-card-sub">Select a dish to load its values. Description is optional.</div>
-  <div class="form-grid">
-    <div class="f-group fg-full"><label class="f-lbl">Select Dish</label><select class="f-sel" id="u-id" onchange="loadForUpdate()">${dishOpts()}</select></div>
-    <div class="f-group fg-full"><label class="f-lbl">Dish Name</label><input class="f-inp" id="u-name" placeholder="Dish name"></div>
-    <div class="f-group"><label class="f-lbl">Country</label><input class="f-inp" id="u-country" placeholder="e.g. India, France…"></div>
-    <div class="f-group"><label class="f-lbl">City</label><input class="f-inp" id="u-city" placeholder="e.g. Mumbai, Lyon…"></div>
-    <div class="f-group"><label class="f-lbl">Cooking Method</label><select class="f-sel" id="u-method">${mOpts()}</select></div>
-    <div class="f-group"><label class="f-lbl">Food Type</label><select class="f-sel" id="u-type">${tOpts()}</select></div>
-    <div class="f-group"><label class="f-lbl">Price (USD)</label><input class="f-inp" id="u-price" type="number" min="0.01" step="0.01" placeholder="e.g. 2.80"></div>
-    <div class="f-group"><label class="f-lbl">Rating (0–5)</label><input class="f-inp" id="u-rating" type="number" min="0" max="5" step="0.1" placeholder="e.g. 4.3"></div>
-    <div class="f-group fg-full"><label class="f-lbl">Ingredients</label><input class="f-inp" id="u-ing" placeholder="Ingredients"></div>
-    <div class="f-group fg-full"><label class="f-lbl">Description <span class="opt-tag">optional</span></label><input class="f-inp" id="u-desc" placeholder="Short description (optional)"></div>
-  </div>
-  <div class="btn-row"><button class="btn-upd" onclick="doUpdate()">Save Changes</button><button class="btn-reset" onclick="setOp('upd')">Reset</button></div>
-</div>`;}
-
-function delForm(){return`<div class="form-card">
-  <div class="form-card-title">Delete a dish</div>
-  <div class="form-card-sub">Select a dish and confirm. This is permanent and syncs everywhere.</div>
-  <div class="form-grid">
-    <div class="f-group fg-full">
-      <label class="f-lbl">Select Dish to Delete</label>
-      <select class="del-sel" id="d-id" onchange="showDelPreview()">${dishOpts()}</select>
-    </div>
-  </div>
-  <div id="d-warn" class="del-warn"></div>
-  <div class="btn-row"><button class="btn-del" onclick="doDelete()">Delete Dish</button><button class="btn-reset" onclick="setOp('del')">Cancel</button></div>
-</div>`;}
-
+function addForm(){return'<div class="form-card"><div class="form-card-title">Add new dish</div><div class="form-card-sub">All fields required except description.</div><div class="form-grid"><div class="f-group fg-full"><label class="f-lbl">Dish Name</label><input class="f-inp" id="c-name" placeholder="e.g. My Special Dish"></div><div class="f-group"><label class="f-lbl">Country</label><input class="f-inp" id="c-country" placeholder="e.g. India, France…"></div><div class="f-group"><label class="f-lbl">City</label><input class="f-inp" id="c-city" placeholder="e.g. Mumbai, Lyon…"></div><div class="f-group"><label class="f-lbl">Cooking Method</label><select class="f-sel" id="c-method">'+mOpts()+'</select></div><div class="f-group"><label class="f-lbl">Food Type</label><select class="f-sel" id="c-type">'+tOpts()+'</select></div><div class="f-group"><label class="f-lbl">Price (USD)</label><input class="f-inp" id="c-price" type="number" min="0.01" step="0.01" placeholder="e.g. 3.50"></div><div class="f-group"><label class="f-lbl">Rating (0–5)</label><input class="f-inp" id="c-rating" type="number" min="0" max="5" step="0.1" placeholder="e.g. 4.7"></div><div class="f-group fg-full"><label class="f-lbl">Ingredients</label><input class="f-inp" id="c-ing" placeholder="e.g. Cheese, Spices, Flour"></div><div class="f-group fg-full"><label class="f-lbl">Description <span class="opt-tag">optional</span></label><input class="f-inp" id="c-desc" placeholder="Short description (optional)"></div></div><div class="btn-row"><button class="btn-add" onclick="doAdd()">Add Dish</button><button class="btn-reset" onclick="setOp(\'add\')">Reset</button></div></div>';}
+function updForm(){return'<div class="form-card"><div class="form-card-title">Update existing dish</div><div class="form-card-sub">Select a dish to load its values. Description is optional.</div><div class="form-grid"><div class="f-group fg-full"><label class="f-lbl">Select Dish</label><select class="f-sel" id="u-id" onchange="loadForUpdate()">'+dishOpts()+'</select></div><div class="f-group fg-full"><label class="f-lbl">Dish Name</label><input class="f-inp" id="u-name" placeholder="Dish name"></div><div class="f-group"><label class="f-lbl">Country</label><input class="f-inp" id="u-country" placeholder="e.g. India, France…"></div><div class="f-group"><label class="f-lbl">City</label><input class="f-inp" id="u-city" placeholder="e.g. Mumbai, Lyon…"></div><div class="f-group"><label class="f-lbl">Cooking Method</label><select class="f-sel" id="u-method">'+mOpts()+'</select></div><div class="f-group"><label class="f-lbl">Food Type</label><select class="f-sel" id="u-type">'+tOpts()+'</select></div><div class="f-group"><label class="f-lbl">Price (USD)</label><input class="f-inp" id="u-price" type="number" min="0.01" step="0.01" placeholder="e.g. 2.80"></div><div class="f-group"><label class="f-lbl">Rating (0–5)</label><input class="f-inp" id="u-rating" type="number" min="0" max="5" step="0.1" placeholder="e.g. 4.3"></div><div class="f-group fg-full"><label class="f-lbl">Ingredients</label><input class="f-inp" id="u-ing" placeholder="Ingredients"></div><div class="f-group fg-full"><label class="f-lbl">Description <span class="opt-tag">optional</span></label><input class="f-inp" id="u-desc" placeholder="Short description (optional)"></div></div><div class="btn-row"><button class="btn-upd" onclick="doUpdate()">Save Changes</button><button class="btn-reset" onclick="setOp(\'upd\')">Reset</button></div></div>';}
+function delForm(){return'<div class="form-card"><div class="form-card-title">Delete a dish</div><div class="form-card-sub">Select a dish and confirm. This is permanent and syncs everywhere.</div><div class="form-grid"><div class="f-group fg-full"><label class="f-lbl">Select Dish to Delete</label><select class="del-sel" id="d-id" onchange="showDelPreview()">'+dishOpts()+'</select></div></div><div id="d-warn" class="del-warn"></div><div class="btn-row"><button class="btn-del" onclick="doDelete()">Delete Dish</button><button class="btn-reset" onclick="setOp(\'del\')">Cancel</button></div></div>';}
 function viewTable(){
-  const rows=DB.map(f=>`<tr><td style="font-weight:700;color:#E8980A">#${f.id}</td><td style="font-weight:600">${f.name}</td><td>${FLAGS[f.country]||''} ${f.country}</td><td>${f.city}</td><td>$${f.price.toFixed(2)}</td><td>★ ${f.rating.toFixed(1)}</td><td><span class="${f.veg==='Yes'?'rbv':'rbnv'}">${f.veg==='Yes'?'Veg':'Non-Veg'}</span></td><td>${f.method}</td><td><button class="re-btn" onclick="editFromTable(${f.id})">Edit</button><button class="rd-btn" onclick="delFromTable(${f.id})">Del</button></td></tr>`).join('');
-  return`<div class="rec-table-wrap"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div><div style="font-size:16px;font-weight:800;color:#1C1B2E">All dishes</div><div style="font-size:12px;color:#AAA;margin-top:2px">${DB.length} records</div></div><button class="btn-add" style="padding:8px 18px;font-size:12px" onclick="setOp('add')">+ Add New</button></div><table class="rec-table"><thead><tr><th>ID</th><th>Dish</th><th>Country</th><th>City</th><th>Price</th><th>Rating</th><th>Type</th><th>Method</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>`;}
+  var rows=DB.map(function(f){return'<tr><td style="font-weight:700;color:#E8980A">#'+f.id+'</td><td style="font-weight:600">'+f.name+'</td><td>'+(FLAGS[f.country]||'')+' '+f.country+'</td><td>'+f.city+'</td><td>$'+f.price.toFixed(2)+'</td><td>★ '+f.rating.toFixed(1)+'</td><td><span class="'+(f.veg==='Yes'?'rbv':'rbnv')+'">'+(f.veg==='Yes'?'Veg':'Non-Veg')+'</span></td><td>'+f.method+'</td><td><button class="re-btn" onclick="editFromTable('+f.id+')">Edit</button><button class="rd-btn" onclick="delFromTable('+f.id+')">Del</button></td></tr>';}).join('');
+  return'<div class="rec-table-wrap"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div><div style="font-size:16px;font-weight:800;color:#1C1B2E">All dishes</div><div style="font-size:12px;color:#AAA;margin-top:2px">'+DB.length+' records</div></div><button class="btn-add" style="padding:8px 18px;font-size:12px" onclick="setOp(\'add\')">+ Add New</button></div><table class="rec-table"><thead><tr><th>ID</th><th>Dish</th><th>Country</th><th>City</th><th>Price</th><th>Rating</th><th>Type</th><th>Method</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table></div>';}
 
 function showDelPreview(){
-  const id=parseInt(document.getElementById('d-id').value);
-  const f=DB.find(x=>x.id===id);
-  const w=document.getElementById('d-warn');
-  if(f){w.style.display='block';w.innerHTML=`<strong>⚠ Will permanently delete:</strong> <em>${f.name}</em> — ${f.city}, ${f.country}`;}
-  else w.style.display='none';
+  var id=parseInt(document.getElementById('d-id').value),f=DB.find(function(x){return x.id===id;}),w=document.getElementById('d-warn');
+  if(f){w.style.display='block';w.innerHTML='<strong>⚠ Will permanently delete:</strong> <em>'+f.name+'</em> — '+f.city+', '+f.country;}else{w.style.display='none';}
 }
 function loadForUpdate(){
-  const id=parseInt(document.getElementById('u-id').value);
-  const f=DB.find(x=>x.id===id);if(!f)return;
-  document.getElementById('u-name').value=f.name;
-  document.getElementById('u-country').value=f.country;
-  document.getElementById('u-city').value=f.city;
-  document.getElementById('u-method').value=f.method;
-  document.getElementById('u-type').value=f.veg==='Yes'?'Vegetarian':'Non-Vegetarian';
-  document.getElementById('u-price').value=f.price;
-  document.getElementById('u-rating').value=f.rating;
-  document.getElementById('u-ing').value=f.ingredients;
-  document.getElementById('u-desc').value=f.description||'';
+  var id=parseInt(document.getElementById('u-id').value),f=DB.find(function(x){return x.id===id;});if(!f)return;
+  document.getElementById('u-name').value=f.name;document.getElementById('u-country').value=f.country;document.getElementById('u-city').value=f.city;
+  document.getElementById('u-method').value=f.method;document.getElementById('u-type').value=f.veg==='Yes'?'Vegetarian':'Non-Vegetarian';
+  document.getElementById('u-price').value=f.price;document.getElementById('u-rating').value=f.rating;
+  document.getElementById('u-ing').value=f.ingredients;document.getElementById('u-desc').value=f.description||'';
 }
-function editFromTable(id){setOp('upd');setTimeout(()=>{const s=document.getElementById('u-id');if(s){s.value=id;loadForUpdate();}},30);}
-function delFromTable(id){setOp('del');setTimeout(()=>{const s=document.getElementById('d-id');if(s){s.value=id;showDelPreview();}},30);}
-function gv(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function editFromTable(id){setOp('upd');setTimeout(function(){var s=document.getElementById('u-id');if(s){s.value=id;loadForUpdate();}},30);}
+function delFromTable(id){setOp('del');setTimeout(function(){var s=document.getElementById('d-id');if(s){s.value=id;showDelPreview();}},30);}
+function gv(id){var el=document.getElementById(id);return el?el.value.trim():'';}
 function doAdd(){
-  const n=gv('c-name'),co=gv('c-country'),ci=gv('c-city'),me=gv('c-method'),ty=gv('c-type'),pr=parseFloat(gv('c-price')),ra=parseFloat(gv('c-rating')),ing=gv('c-ing'),desc=gv('c-desc');
-  if(!n){showToast('Dish name is required','err');return;}
-  if(!co){showToast('Country is required','err');return;}
-  if(!ci){showToast('City is required','err');return;}
-  if(!me){showToast('Cooking method is required','err');return;}
-  if(!ty){showToast('Food type is required','err');return;}
-  if(isNaN(pr)||pr<=0){showToast('Enter a valid price','err');return;}
+  var n=gv('c-name'),co=gv('c-country'),ci=gv('c-city'),me=gv('c-method'),ty=gv('c-type'),pr=parseFloat(gv('c-price')),ra=parseFloat(gv('c-rating')),ing=gv('c-ing'),desc=gv('c-desc');
+  if(!n){showToast('Dish name is required','err');return;}if(!co){showToast('Country is required','err');return;}
+  if(!ci){showToast('City is required','err');return;}if(!me){showToast('Cooking method is required','err');return;}
+  if(!ty){showToast('Food type is required','err');return;}if(isNaN(pr)||pr<=0){showToast('Enter a valid price','err');return;}
   if(isNaN(ra)||ra<0||ra>5){showToast('Rating must be 0–5','err');return;}
   DB.push({id:nextId++,name:n,country:co,city:ci,method:me,veg:ty==='Vegetarian'?'Yes':'No',price:pr,rating:ra,ingredients:ing,description:desc});
-  syncAll();showToast(`✓ "${n}" added to Zestreet`);setOp('add');
+  syncAll();showToast('✓ "'+n+'" added to Zestreet');setOp('add');
 }
 function doUpdate(){
-  const id=parseInt(gv('u-id'));const f=DB.find(x=>x.id===id);
+  var id=parseInt(gv('u-id')),f=DB.find(function(x){return x.id===id;});
   if(!f){showToast('Please select a dish','err');return;}
-  const n=gv('u-name'),co=gv('u-country'),ci=gv('u-city'),me=gv('u-method'),ty=gv('u-type'),pr=parseFloat(gv('u-price')),ra=parseFloat(gv('u-rating')),ing=gv('u-ing'),desc=gv('u-desc');
+  var n=gv('u-name'),co=gv('u-country'),ci=gv('u-city'),me=gv('u-method'),ty=gv('u-type'),pr=parseFloat(gv('u-price')),ra=parseFloat(gv('u-rating')),ing=gv('u-ing'),desc=gv('u-desc');
   if(!n||!co||!ci||!me||!ty){showToast('Please fill all required fields','err');return;}
-  if(isNaN(pr)||pr<=0){showToast('Enter a valid price','err');return;}
-  if(isNaN(ra)||ra<0||ra>5){showToast('Rating must be 0–5','err');return;}
+  if(isNaN(pr)||pr<=0){showToast('Enter a valid price','err');return;}if(isNaN(ra)||ra<0||ra>5){showToast('Rating must be 0–5','err');return;}
   Object.assign(f,{name:n,country:co,city:ci,method:me,veg:ty==='Vegetarian'?'Yes':'No',price:pr,rating:ra,ingredients:ing,description:desc});
-  syncAll();showToast(`✓ "${n}" updated across Zestreet`);setOp('upd');
+  syncAll();showToast('✓ "'+n+'" updated across Zestreet');setOp('upd');
 }
 function doDelete(){
-  const id=parseInt(gv('d-id'));const idx=DB.findIndex(x=>x.id===id);
+  var id=parseInt(gv('d-id')),idx=DB.findIndex(function(x){return x.id===id;});
   if(idx<0){showToast('Please select a dish','err');return;}
-  const name=DB[idx].name;DB.splice(idx,1);
-  syncAll();showToast(`✓ "${name}" removed from Zestreet`);setOp('del');
+  var name=DB[idx].name;DB.splice(idx,1);
+  syncAll();showToast('✓ "'+name+'" removed from Zestreet');setOp('del');
 }
-function showToast(msg,type='ok'){
-  const t=document.getElementById('toast');t.textContent=msg;
+function showToast(msg,type){
+  var t=document.getElementById('toast');t.textContent=msg;
   t.className='toast show'+(type==='err'?' err':'');
-  setTimeout(()=>t.classList.remove('show'),3000);
+  setTimeout(function(){t.classList.remove('show');},3000);
 }
-
 function buildCharts(){
-  const s=getStats();
-  const bo={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
-  new Chart(document.getElementById('ch1'),{type:'bar',data:{labels:['Cheap (<$2)','Moderate','Expensive (>$4)'],datasets:[{data:[
-    +(DB.filter(f=>f.price<2).reduce((a,f)=>a+f.rating,0)/(DB.filter(f=>f.price<2).length||1)).toFixed(2),
-    +(DB.filter(f=>f.price>=2&&f.price<=4).reduce((a,f)=>a+f.rating,0)/(DB.filter(f=>f.price>=2&&f.price<=4).length||1)).toFixed(2),
-    +(DB.filter(f=>f.price>4).reduce((a,f)=>a+f.rating,0)/(DB.filter(f=>f.price>4).length||1)).toFixed(2)
-  ],backgroundColor:['rgba(255,255,255,.9)','rgba(255,255,255,.65)','rgba(255,255,255,.45)'],borderRadius:6,barPercentage:.5}]},options:{...bo,scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,.7)',font:{size:10}}},y:{min:0,max:5,grid:{color:'rgba(255,255,255,.12)'},ticks:{color:'rgba(255,255,255,.7)',font:{size:10}}}}}});
-  ch2Inst=new Chart(document.getElementById('ch2'),{type:'doughnut',data:{labels:['Vegetarian','Non-Vegetarian'],datasets:[{data:[s.veg,s.nv],backgroundColor:['#5C1A30','#D4537E'],borderWidth:0,hoverOffset:4}]},options:{...bo,cutout:'62%'}});
-  ch3Inst=new Chart(document.getElementById('ch3'),{type:'doughnut',data:{labels:['Healthy','Unhealthy'],datasets:[{data:[s.healthy,s.unhealthy],backgroundColor:['rgba(255,255,255,.88)','rgba(255,255,255,.3)'],borderWidth:0,hoverOffset:4}]},options:{...bo,cutout:'62%'}});
-  const fd=(()=>{const cc={};DB.forEach(f=>{cc[f.country]=cc[f.country]||{t:0,fr:0};cc[f.country].t++;if(f.method==='Fried')cc[f.country].fr++;});return Object.entries(cc).map(([c,v])=>({c,p:Math.round(v.fr*100/v.t)})).sort((a,b)=>b.p-a.p).slice(0,6);})();
-  new Chart(document.getElementById('ch4'),{type:'bar',data:{labels:fd.map(x=>x.c),datasets:[{data:fd.map(x=>x.p),backgroundColor:'#3A5A9A',borderRadius:[0,4,4,0],barPercentage:.55}]},options:{...bo,indexAxis:'y',scales:{x:{min:0,max:105,grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#1A2E7A',font:{size:10},callback:v=>v+'%'}},y:{grid:{display:false},ticks:{color:'#1A2E7A',font:{size:10}}}}}});
-  const cc2={};DB.forEach(f=>cc2[f.city]=(cc2[f.city]||0)+1);
-  const top10=Object.entries(cc2).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  new Chart(document.getElementById('ch5'),{type:'bar',data:{labels:top10.map(x=>x[0]),datasets:[{data:top10.map(x=>x[1]),backgroundColor:'#1C1B2E',borderRadius:4,barPercentage:.55}]},options:{...bo,scales:{x:{grid:{display:false},ticks:{color:'#555',font:{size:9},maxRotation:40,autoSkip:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#555',font:{size:10}}}}}});
-  const top6val=DB.filter(f=>f.price>0).map(f=>({name:f.name,v:+(f.rating/f.price).toFixed(2)})).sort((a,b)=>b.v-a.v).slice(0,6);
-  new Chart(document.getElementById('ch6'),{type:'bar',data:{labels:top6val.map(x=>x.name),datasets:[{data:top6val.map(x=>x.v),backgroundColor:'#1A6B38',borderRadius:[0,4,4,0],barPercentage:.5}]},options:{...bo,indexAxis:'y',scales:{x:{grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#1A6B38',font:{size:10}}},y:{grid:{display:false},ticks:{color:'#1A6B38',font:{size:10}}}}}});
+  var s=getStats(),bo={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
+  var cheap=DB.filter(function(f){return f.price<2;}),mod=DB.filter(function(f){return f.price>=2&&f.price<=4;}),exp=DB.filter(function(f){return f.price>4;});
+  new Chart(document.getElementById('ch1'),{type:'bar',data:{labels:['Cheap (<$2)','Moderate','Expensive (>$4)'],datasets:[{data:[cheap.length?+(cheap.reduce(function(a,f){return a+f.rating;},0)/cheap.length).toFixed(2):0,mod.length?+(mod.reduce(function(a,f){return a+f.rating;},0)/mod.length).toFixed(2):0,exp.length?+(exp.reduce(function(a,f){return a+f.rating;},0)/exp.length).toFixed(2):0],backgroundColor:['rgba(255,255,255,.9)','rgba(255,255,255,.65)','rgba(255,255,255,.45)'],borderRadius:6,barPercentage:.5}]},options:Object.assign({},bo,{scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,.7)',font:{size:10}}},y:{min:0,max:5,grid:{color:'rgba(255,255,255,.12)'},ticks:{color:'rgba(255,255,255,.7)',font:{size:10}}}}})});
+  ch2Inst=new Chart(document.getElementById('ch2'),{type:'doughnut',data:{labels:['Vegetarian','Non-Vegetarian'],datasets:[{data:[s.veg,s.nv],backgroundColor:['#5C1A30','#D4537E'],borderWidth:0,hoverOffset:4}]},options:Object.assign({},bo,{cutout:'62%'})});
+  ch3Inst=new Chart(document.getElementById('ch3'),{type:'doughnut',data:{labels:['Healthy','Unhealthy'],datasets:[{data:[s.healthy,s.unhealthy],backgroundColor:['rgba(255,255,255,.88)','rgba(255,255,255,.3)'],borderWidth:0,hoverOffset:4}]},options:Object.assign({},bo,{cutout:'62%'})});
+  var fd=(function(){var cc={};DB.forEach(function(f){cc[f.country]=cc[f.country]||{t:0,fr:0};cc[f.country].t++;if(f.method==='Fried')cc[f.country].fr++;});return Object.entries(cc).map(function(e){return{c:e[0],p:Math.round(e[1].fr*100/e[1].t)};}).sort(function(a,b){return b.p-a.p;}).slice(0,6);})();
+  new Chart(document.getElementById('ch4'),{type:'bar',data:{labels:fd.map(function(x){return x.c;}),datasets:[{data:fd.map(function(x){return x.p;}),backgroundColor:'#3A5A9A',borderRadius:[0,4,4,0],barPercentage:.55}]},options:Object.assign({},bo,{indexAxis:'y',scales:{x:{min:0,max:105,grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#1A2E7A',font:{size:10},callback:function(v){return v+'%';}}},y:{grid:{display:false},ticks:{color:'#1A2E7A',font:{size:10}}}}})});
+  var cc2={};DB.forEach(function(f){cc2[f.city]=(cc2[f.city]||0)+1;});
+  var top10=Object.entries(cc2).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+  new Chart(document.getElementById('ch5'),{type:'bar',data:{labels:top10.map(function(x){return x[0];}),datasets:[{data:top10.map(function(x){return x[1];}),backgroundColor:'#1C1B2E',borderRadius:4,barPercentage:.55}]},options:Object.assign({},bo,{scales:{x:{grid:{display:false},ticks:{color:'#555',font:{size:9},maxRotation:40,autoSkip:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#555',font:{size:10}}}}})});
+  var top6=DB.filter(function(f){return f.price>0;}).map(function(f){return{name:f.name,v:+(f.rating/f.price).toFixed(2)};}).sort(function(a,b){return b.v-a.v;}).slice(0,6);
+  new Chart(document.getElementById('ch6'),{type:'bar',data:{labels:top6.map(function(x){return x.name;}),datasets:[{data:top6.map(function(x){return x.v;}),backgroundColor:'#1A6B38',borderRadius:[0,4,4,0],barPercentage:.5}]},options:Object.assign({},bo,{indexAxis:'y',scales:{x:{grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#1A6B38',font:{size:10}}},y:{grid:{display:false},ticks:{color:'#1A6B38',font:{size:10}}}}})});
   updateKPIs();updateDeepTables();
 }
 </script>
+</body>
+</html>
